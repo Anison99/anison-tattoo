@@ -1,0 +1,69 @@
+
+.HeroSection {
+    position: relative;
+    height: 100vh; 
+    width: 100%; 
+    overflow: hidden; 
+  }
+  
+  .SwiperSlide {
+    height: 100%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .SwiperSlide img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+  }
+
+  .swiper-slide.swiper-slide-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+.swiper-button-next {
+  color: #000000 /* Kolor tekstu */
+  /* Dodatkowe stylizacje, jeśli to konieczne */
+}
+
+.swiper-button-next:hover {
+  color: #000000; /* Kolor tekstu po najechaniu myszą */
+  /* Dodatkowe stylizacje, jeśli to konieczne */
+}
+
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  opacity: 0.35;
+  cursor: auto;
+  pointer-events: none;
+  color: #000000; /* Kolor tekstu dla wyłączonych przycisków */
+  /* Dodatkowe stylizacje dla wyłączonych przycisków, jeśli to konieczne */
+}
+  
+@media (max-width: 960px) {
+  .HeroSection {
+    margin-top: -40px; 
+  }
+  .SwiperSlide {
+  }
+
+  .swiper-slide.swiper-slide-active {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -20px;
+  }
+
+  .SwiperSlide img {
+    max-width: 100%; 
+    height: auto;
+  }
+}
