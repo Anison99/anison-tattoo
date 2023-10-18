@@ -1,7 +1,5 @@
 import React from 'react';
-import '../css/Artworks.css';
-import Tattoos from './Tattoos';
-import slides3 from '../assets/tattoo.json';
+import '../css/Tattoos.css';
 
 import {Swiper,SwiperSlide} from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -10,11 +8,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-function Artworks({slides2}) {
+function Tattoos({slides3}) {
   return (
     <div data-aos="fade-down" data-aos-duration="2000">
-        <h1 className='about-title' alt='about-us'>NASZE PRACE</h1>
-      <hr></hr>
       <div className='slider-position'>
       <Swiper
       modules={[Navigation, Pagination,  A11y]}
@@ -26,16 +22,15 @@ function Artworks({slides2}) {
         onSlideChange={() => console.log('slide change')}
         onSwiper={(swiper) => console.log(swiper)}
       >
-        {slides2 && slides2.map((slide) => (
+        {slides3 && slides3.map((slide) => (
           <SwiperSlide key={slide.image}>
             <img src={slide.image} alt={slide.title} />
           </SwiperSlide>
         ))}
       </Swiper>
-      <Tattoos slides3={slides3}/>
       </div>
       </div>
   )
 }
 
-export default Artworks
+export default Tattoos

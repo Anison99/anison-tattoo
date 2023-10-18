@@ -1,0 +1,32 @@
+.Tattoos {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+
+.slider-position{
+    margin-top: 20px;
+}
+  
+  .swiper-slide {
+    margin-top: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-right: 15px; 
+  }
+  
+  .swiper-slide:last-child {
+    margin-right: 0; 
+  }
+  
+  .swiper-slide img {
+    max-width: 70%; 
+    max-height: 100%;
+    height: auto;
+    border-radius: 10px; 
+  }
+  
