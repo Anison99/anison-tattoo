@@ -1,7 +1,8 @@
 import React from 'react';
-import './App.css';
+import './css/App.css';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
+import SocialMedia from './components/SocialMedia';
 import slides from './assets/mock.json';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; {/* teraz zamiast Switch używa się Routes */}
@@ -15,6 +16,7 @@ function App() {
           <Route path='/' exact /> {/* routing do strony HOME */}
         </Routes>
       </Router>
+      <SocialMedia/>
       <HeroSection slides={slides}/>
 
       

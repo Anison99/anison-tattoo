@@ -1,5 +1,5 @@
 import React from 'react';
-import './HeroSection.css';
+import '../css/HeroSection.css';
 import {Swiper,SwiperSlide} from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css';

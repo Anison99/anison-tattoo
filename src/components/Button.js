@@ -1,6 +1,7 @@
 import React from 'react';
-import './Button.css';
 import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Importuj style Bootstrap przed Twoimi stylami
+import '../css/Button.css';
 
 const STYLES = ['btn--primary','btn--outline'];
 
