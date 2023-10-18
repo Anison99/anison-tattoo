@@ -1,4 +1,3 @@
-
 .HeroSection {
     position: relative;
     height: 100vh; 
@@ -28,13 +27,11 @@
   }
 
 .swiper-button-next {
-  color: #000000 /* Kolor tekstu */
-  /* Dodatkowe stylizacje, jeśli to konieczne */
+  color: #000000 
 }
 
 .swiper-button-next:hover {
-  color: #000000; /* Kolor tekstu po najechaniu myszą */
-  /* Dodatkowe stylizacje, jeśli to konieczne */
+  color: #000000; 
 }
 
 .swiper-button-prev.swiper-button-disabled,
@@ -42,15 +39,17 @@
   opacity: 0.35;
   cursor: auto;
   pointer-events: none;
-  color: #000000; /* Kolor tekstu dla wyłączonych przycisków */
-  /* Dodatkowe stylizacje dla wyłączonych przycisków, jeśli to konieczne */
+  color: #000000; 
+}
+
+.swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet{
+  background: #000000;
 }
   
 @media (max-width: 960px) {
   .HeroSection {
     margin-top: -40px; 
-  }
-  .SwiperSlide {
   }
 
   .swiper-slide.swiper-slide-active {
