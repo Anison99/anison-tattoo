@@ -2,7 +2,7 @@ import React from 'react';
 import './css/App.css';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
-import SocialMedia from './components/SocialMedia';
+import AboutUs from './components/AboutUs';
 import slides from './assets/mock.json';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; {/* teraz zamiast Switch używa się Routes */}
@@ -14,10 +14,11 @@ function App() {
         <Navbar/>
         <Routes>
           <Route path='/' exact /> {/* routing do strony HOME */}
+          <Route path='/#about' cmoponent={AboutUs}/>
         </Routes>
-      </Router>
-      <SocialMedia/>
+      </Router>  
       <HeroSection slides={slides}/>
+      <AboutUs/>
 
       
     </>

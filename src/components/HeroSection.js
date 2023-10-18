@@ -11,6 +11,7 @@ import 'swiper/css/scrollbar';
 
 function HeroSection({ slides }) {
     return (
+      <div data-aos="fade-down" data-aos-duration="2000">
       <Swiper
       modules={[Navigation, Pagination,  A11y]}
         spaceBetween={50}
@@ -27,6 +28,7 @@ function HeroSection({ slides }) {
           </SwiperSlide>
         ))}
       </Swiper>
+      </div>
     );
   }
   

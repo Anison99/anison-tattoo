@@ -8,8 +8,9 @@
 
 .social-media-icons-custom a{
     color: #0D2E40;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     display: inline-block;
     margin-right: 15px;
+    opacity: 80%;
     
 }

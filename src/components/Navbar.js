@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from './Button';
 import '../css/Navbar.css';
 import myLogo from '../images/logo96.png';
+import SocialMedia from'./SocialMedia';
 
 function Navbar() {
   const [click,setClick] = useState(false); {/* aktualizacja po kliknięciu w menu responsywne*/}
@@ -28,6 +29,7 @@ function Navbar() {
         <div className="navbar-container">
             <Link to="/" className="navbar-logo">
             <img src={myLogo} alt="My Logo" />
+            <SocialMedia/>
             </Link>
             <div className='menu-icon' onClick={handleClick}>
               <i className={click ? "fas fa-times" : "fas fa-bars"} /> {/* menu responsywne logo font awesome*/}
@@ -35,25 +37,25 @@ function Navbar() {
             {/*------------------------ NAWIGACJA DO SEKCJI ------------------------ */}
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
               <li className='nav-item'>
-                <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                <Link to='/#' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
               </li>
 
               <li className='nav-item'>
-                <Link to='/about' className='nav-links' onClick={closeMobileMenu}>
+                <Link to='/#about' className='nav-links' onClick={closeMobileMenu}>
                   O nas
                 </Link>
               </li>
 
               <li className='nav-item'>
-                <Link to='/artworks' className='nav-links'  onClick={closeMobileMenu}>
+                <Link to='/#artworks' className='nav-links'  onClick={closeMobileMenu}>
                   Nasze prace
                 </Link>
               </li>
 
               <li className='nav-item'>
-                <Link to='/contact' className='nav-links' onClick={closeMobileMenu}>
+                <Link to='/#contact' className='nav-links' onClick={closeMobileMenu}>
                   Kontakt
                 </Link>
               </li>

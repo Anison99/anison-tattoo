@@ -1,0 +1,26 @@
+.about-title{
+    font-size: 2.5rem;
+    margin-top: 40px;
+    text-align: center; /* Wyśrodkowanie w poziomie */
+    line-height: 1.5;
+    color:  #0D2E40;
+}
+hr{
+    border: none; /* Grubość i kolor linii */
+    height: 3px;
+    background-color: #A8891C;
+    margin: 20px 15%;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Dodaj to, aby umieścić zawartość na środku */
+    padding: 20px;
+  }
+  
+  .rounded-image {
+    border-radius: 5%;
+    margin-right: 20px;
+    object-fit: cover; /* Dodaj to, aby zachować proporcje obrazka i wypełnić obszar */
+  }
