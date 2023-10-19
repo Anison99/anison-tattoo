@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutUs from './components/AboutUs';
 import Artworks from './components/Artworks';
+import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 import slides from './assets/mock.json';
@@ -26,7 +27,7 @@ function App() {
       <HeroSection slides={slides}/>
       <AboutUs/>
       <Artworks slides2={slides2}/>
-      
+      <Contact/>
       <Footer/>
     </>
   );
