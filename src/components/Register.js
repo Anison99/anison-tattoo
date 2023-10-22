@@ -14,14 +14,24 @@ const Register = () => {
     setUserData({ ...userData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Wysłanie danych do serwera i zapisanie ich w bazie MongoDB
-    // Przy użyciu np. fetch lub Axios
-    // Należy obsłużyć odpowiednie zapytanie do serwera
-    // Po udanej rejestracji można przekierować użytkownika na inną stronę
+  
+    const response = await fetch('/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData), // Przesyłamy dane z formularza
+    });
+  
+    if (response.ok) {
+      console.log('Rejestracja zakończona sukcesem');
+    } else {
+      console.error('Błąd podczas rejestracji');
+    }
   };
-
+  
   return (
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
