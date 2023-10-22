@@ -1,29 +1,23 @@
-import React from 'react';
-import GoogleMapReact from 'google-map-react';
+import React, { useEffect } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import '../css/Map.css';
 
-const MapMarker = () => <div className="map-marker">📍</div>; 
+const MapMarker = () => <div className="map-marker">📍</div>;
 
 const Map = () => {
-  const defaultProps = {
-    center: {
-      lat: 51.505,
-      lng: -0.09,
-    },
-    zoom: 11,
-  };
+  useEffect(() => {
+    // Inicjalizacja mapy
+    const map = L.map('map').setView([51.505, -0.09], 11);
 
-  return (
-    <div className="map-container">
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: 'TWOJ_KLUCZ_API' }} 
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-      >
-        <MapMarker lat={51.505} lng={-0.09} />
-      </GoogleMapReact>
-    </div>
-  );
+    // Dodaj warstwę mapy OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Dodaj marker
+    L.marker([51.505, -0.09], { icon: L.divIcon({ className: 'custom-marker' }) }).addTo(map);
+  }, []);
+
+  return <div id="map" className="map-container" />;
 };
 
 export default Map;
