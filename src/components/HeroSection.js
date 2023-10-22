@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/HeroSection.css';
+import Home from './Home';
 import {Swiper,SwiperSlide} from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css';
@@ -28,6 +29,7 @@ function HeroSection({ slides }) {
           </SwiperSlide>
         ))}
       </Swiper>
+      <Home/>
       </div>
     );
   }

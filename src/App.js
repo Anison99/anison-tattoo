@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './css/App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -11,25 +12,24 @@ import Footer from './components/Footer';
 import slides from './assets/mock.json';
 import slides2 from './assets/artworks.json';
 
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; {/* teraz zamiast Switch używa się Routes */}
-
 function App() {
+  const [activeComponent, setActiveComponent] = useState('hero');
+
+  const handleComponentChange = (component) => {
+    setActiveComponent(component);
+  };
+
   return (
-    <>
-      <Router>
-        <Navbar/>
-        <Routes>
-          <Route path='/' exact /> {/* routing do strony HOME */}
-          <Route path='/#about' cmoponent={AboutUs}/>
-        </Routes>
-      </Router>  
-      <HeroSection slides={slides}/>
-      <AboutUs/>
-      <Artworks slides2={slides2}/>
-      <Contact/>
-      <Footer/>
-    </>
+    <Router>
+      <Navbar onComponentChange={handleComponentChange} />
+      <Routes>
+        <Route path="/" element={<HeroSection slides={slides} />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/artworks" element={<Artworks slides2={slides2} />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 

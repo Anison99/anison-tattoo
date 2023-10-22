@@ -1,7 +1,6 @@
 import React from 'react';
 import '../css/AboutUs.css';
 
-import artist1 from '../images/artist1.png';
 
 function AboutUs() {
   return (

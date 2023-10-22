@@ -35,7 +35,7 @@ function Contact() {
           </p>
           <p>
             <FontAwesomeIcon icon={faMapMarker} /> {contactData.address}
-          </p>
+          </p> 
           </div>
         </div>
         {/* Mapa lokalizacji studia */}
