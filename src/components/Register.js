@@ -16,22 +16,29 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const response = await fetch('/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData), // Przesyłamy dane z formularza
-    });
-  
-    if (response.ok) {
-      console.log('Rejestracja zakończona sukcesem');
-    } else {
-      console.error('Błąd podczas rejestracji');
+
+    const { username, email, password } = userData;
+
+    try {
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      if (response.ok) {
+        console.log('Rejestracja zakończona sukcesem');
+        // Tutaj możesz dodać przekierowanie użytkownika na inną stronę po udanej rejestracji
+      } else {
+        console.error('Błąd podczas rejestracji');
+      }
+    } catch (error) {
+      console.error('Wystąpił błąd podczas rejestracji:', error);
     }
   };
-  
+
   return (
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
