@@ -15,7 +15,7 @@
     justify-content: center;
     align-items: center;
     height: 80px;
-    max-width: 1500px;
+    max-width: 2000px;
   }
   
   .navbar-logo {
@@ -50,6 +50,9 @@
   
   .nav-item {
     height: 30px;
+    display: flex;
+    align-items: center;
+     margin-right: 5px; /* Dodaj odstęp między elementami listy */
   }
   
   .nav-links {

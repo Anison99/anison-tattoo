@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Login.css'; // Zaimportuj odpowiednie style
 
@@ -7,7 +7,7 @@ const Login = () => {
     email: '',
     password: '',
   });
-
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
@@ -31,6 +31,12 @@ const Login = () => {
       if (response.status === 200) {
         // Po udanym zalogowaniu można przekierować użytkownika na inną stronę
         window.location.href = '/'; // Przekierowanie na stronę główną
+
+        // Ustaw zalogowanego użytkownika w stanie
+        setUser({ email: userData.email });
+
+        // Zapisz zalogowanego użytkownika w localStorage
+        localStorage.setItem('user', JSON.stringify({ email: userData.email }));
         console.log('Zalogowano pomyślnie');
       } else {
         // W przypadku błędu odpowiedzi serwera
@@ -41,6 +47,21 @@ const Login = () => {
       setError('Wystąpił błąd podczas logowania. Spróbuj ponownie później.');
     }
   };
+
+  const handleLogout = () => {
+    // Obsługa wylogowania
+    setUser(null); // Wyczyść zalogowanego użytkownika z stanu
+    localStorage.removeItem('user'); // Usuń informacje o zalogowanym użytkowniku z localStorage
+  };
+
+  useEffect(() => {
+    // Sprawdź, czy użytkownik jest już zalogowany w localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      setUser(userData); // Ustaw zalogowanego użytkownika w stanie
+    }
+  }, []);
 
   return (
     <div className="login-container">
@@ -69,13 +90,19 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit" className="login-button">
-          Zaloguj się
-        </button>
+        {user ? ( // Jeśli użytkownik jest zalogowany
+          <button type="button" className="login-button" onClick={handleLogout}>
+            Wyloguj
+          </button>
+        ) : (
+          <button type="submit" className="login-button">
+            Zaloguj się
+          </button>
+        )}
       </form>
       <div>
         <p className="login-info">
-          Nie masz jeszcze konta? <Link to="/register">Zarejestruj się!</Link>
+          Nie masz jeszcze konta? <Link to="/register">{user ? 'WYLOGUJ' : 'Zarejestruj się'}</Link>
         </p>
       </div>
     </div>

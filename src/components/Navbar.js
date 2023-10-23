@@ -8,6 +8,14 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false); // Dodaj stan zalogowanego użytkownika
+
+  // Funkcja do obsługi wylogowania
+  const handleLogout = () => {
+    // Wyczyść lokalny stan zalogowanego użytkownika
+    localStorage.removeItem('user');
+    setLoggedIn(false);
+  };
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -26,6 +34,14 @@ function Navbar() {
     return () => {
       window.removeEventListener('resize', checkButtonSize);
     };
+  }, []);
+
+  // Sprawdź stan zalogowanego użytkownika po każdym odświeżeniu strony
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setLoggedIn(true);
+    }
   }, []);
 
   return (
@@ -56,17 +72,24 @@ function Navbar() {
               </Link>
             </li>
             <li className='nav-item'>
-              <Link to="/login" className='nav-links' onClick={closeMobileMenu}>
-                Zaloguj
-              </Link>
-            </li>
-            <li className='nav-item'>
-              <Link to='/register' className='nav-links-mobile' onClick={closeMobileMenu}>
-                Zarejestruj
-              </Link>
-            </li>
+  {loggedIn ? ( // Sprawdź, czy użytkownik jest zalogowany
+    <>
+      <Link to="/profile" className='nav-links' onClick={closeMobileMenu}>
+        Profil
+      </Link>
+      <Button buttonStyle='btn--outline' onClick={handleLogout}>
+        Wyloguj
+      </Button>
+    </>
+  ) : (
+    <Link to="/login" className='nav-links' onClick={closeMobileMenu}>
+      Zaloguj
+    </Link>
+  )}
+</li>
+
           </ul>
-          {button && (
+          {button && !loggedIn && ( // Wyświetl przycisk "Zarejestruj" tylko jeśli nie jesteś zalogowany
             <Button buttonStyle='btn--outline' linkTo="/register">
               Zarejestruj
             </Button>

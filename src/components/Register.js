@@ -30,7 +30,6 @@ const Register = () => {
 
       if (response.ok) {
         console.log('Rejestracja zakończona sukcesem');
-        // Tutaj możesz dodać przekierowanie użytkownika na inną stronę po udanej rejestracji
       } else {
         console.error('Błąd podczas rejestracji');
       }
