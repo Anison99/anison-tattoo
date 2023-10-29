@@ -4,22 +4,28 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const User = require('./assets/User.js');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy; // Import Passport Local Strategy
+const LocalStrategy = require('passport-local').Strategy;
 
 const session = require('express-session');
 
-app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false }, // Dostosuj ustawienia cookie do potrzeb
-}));
+app.use(cors());
+app.use(express.json());
+app.use(
+  session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // TODO: ustawienia cookie 
+  })
+);
+
+// Konfiguracja Passport
 passport.use(
   new LocalStrategy(
-    { usernameField: 'email' }, // Ustawić na pola używane w formularzach
+    { usernameField: 'email' },
     async (email, password, done) => {
       try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email });
 
         if (!user) {
           return done(null, false, { message: 'Nieprawidłowy email' });
@@ -47,14 +53,15 @@ passport.deserializeUser((id, done) => {
   });
 });
 
-app.use(express.json());
-app.use(cors());
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose.connect('mongodb://localhost:27017/anison-tattoo', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
+// Obsługa rejestracji użytkownika
 app.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -69,9 +76,9 @@ app.post('/register', async (req, res) => {
 
     req.login(newUser, (err) => {
       if (err) {
-        return res.status(500).json({ message: 'Wystąpił błąd podczas rejestracji' });
+        return res.status(500).json({ message: 'Błąd logowania po rejestracji' });
       }
-      return res.json({ message: 'Rejestracja zakończona sukcesem' });
+      return res.json({ message: 'Rejestracja i logowanie zakończone sukcesem' });
     });
   } catch (error) {
     console.error('Błąd rejestracji:', error);
@@ -79,27 +86,28 @@ app.post('/register', async (req, res) => {
   }
 });
 
+// Obsługa logowania użytkownika
 app.post('/login', passport.authenticate('local'), (req, res) => {
   // Obsługa logowania
   console.log('Zalogowano użytkownika:', req.user.username);
   res.json({ message: 'Zalogowano pomyślnie' });
 });
 
+// Przekierowanie po udanym logowaniu
 app.get('/success', (req, res) => {
-  // Przekierowanie po udanym logowaniu
   res.json({ message: 'Udane logowanie' });
 });
 
+// Obsługa błędów logowania
 app.get('/failure', (req, res) => {
-  // Obsługa błędów logowania
   res.status(401).json({ message: 'Nieprawidłowy email lub hasło' });
 });
 
+// Wylogowanie użytkownika
 app.get('/logout', (req, res) => {
   req.logout();
   res.json({ message: 'Wylogowano pomyślnie' });
 });
-
 
 const port = process.env.PORT || 5000;
 

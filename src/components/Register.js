@@ -9,6 +9,8 @@ const Register = () => {
     password: '',
   });
 
+  const [error, setError] = useState(null); // Dodaj stan do obsługi błędów
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -31,9 +33,12 @@ const Register = () => {
       if (response.ok) {
         console.log('Rejestracja zakończona sukcesem');
       } else {
-        console.error('Błąd podczas rejestracji');
+        const errorMessage = await response.text(); // Pobierz komunikat o błędzie z odpowiedzi
+        setError(`Błąd podczas rejestracji: ${errorMessage}`);
+        console.error('Błąd podczas rejestracji:', errorMessage);
       }
     } catch (error) {
+      setError('Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.');
       console.error('Wystąpił błąd podczas rejestracji:', error);
     }
   };
@@ -42,6 +47,7 @@ const Register = () => {
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
         <h2>Rejestracja</h2>
+        {error && <p className="error-message">{error}</p>} {/* Wyświetl błąd, jeśli istnieje */}
         <div className="form-group">
           <label htmlFor="username">Nazwa użytkownika:</label>
           <input
