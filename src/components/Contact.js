@@ -43,8 +43,6 @@ function Contact() {
           <Map />
         </div>
       </div>
-      {/* Formularz kontaktowy (widoczny tylko dla zalogowanych użytkowników) */}
-      {isUserLoggedIn && <ContactForm />}
     </div>
   );
 }

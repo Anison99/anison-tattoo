@@ -9,11 +9,12 @@ import HeroSection from './components/HeroSection';
 import AboutUs from './components/AboutUs';
 import Artworks from './components/Artworks';
 import Contact from './components/Contact';
+import Profile from './components/Profile';
 import Footer from './components/Footer';
 
 
-import slides from './assets/mock.json';
-import slides2 from './assets/artworks.json';
+import slides from './models/mock.json';
+import slides2 from './models/artworks.json';
 
 function App() {
   const [activeComponent, setActiveComponent] = useState('hero');
@@ -32,6 +33,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+
       </Routes>
       <Footer />
     </Router>

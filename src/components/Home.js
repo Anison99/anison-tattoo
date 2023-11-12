@@ -3,7 +3,7 @@ import AboutUs from './AboutUs';
 import Artworks from './Artworks';
 import Contact from './Contact';
 
-import slides2 from '../assets/artworks.json';
+import slides2 from '../models/artworks.json';
 function Home() {
   return (
     <div>

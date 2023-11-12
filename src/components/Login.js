@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import '../css/Login.css'; // Zaimportuj odpowiednie style
+import { Link, useNavigate } from 'react-router-dom'; // Zmiana useHistory na useNavigate
+import '../css/Login.css';
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -9,6 +9,7 @@ const Login = () => {
   });
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Zmiana useHistory na useNavigate
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,47 +20,41 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // Wysłanie danych do serwera w celu uwierzytelnienia użytkownika
       const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
+        credentials: 'include',
       });
 
-      if (response.status === 200) {
-        // Po udanym zalogowaniu można przekierować użytkownika na inną stronę
-        window.location.href = '/'; // Przekierowanie na stronę główną
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Zalogowano:', data);
+        setUser(data);
 
-        // Ustaw zalogowanego użytkownika w stanie
-        setUser({ email: userData.email });
-
-        // Zapisz zalogowanego użytkownika w localStorage
-        localStorage.setItem('user', JSON.stringify({ email: userData.email }));
-        console.log('Zalogowano pomyślnie');
+        // Przekieruj do odpowiedniej ścieżki na frontendzie po zalogowaniu
+        navigate('/dashboard'); // Zmiana history.push na navigate
       } else {
-        // W przypadku błędu odpowiedzi serwera
-        setError('Nieprawidłowy email lub hasło. Spróbuj ponownie.');
+        const errorData = await response.json();
+        setError(errorData.message);
       }
     } catch (error) {
-      console.error('Wystąpił błąd podczas logowania:', error);
-      setError('Wystąpił błąd podczas logowania. Spróbuj ponownie później.');
+      console.error('Błąd logowania:', error);
     }
   };
 
   const handleLogout = () => {
-    // Obsługa wylogowania
-    setUser(null); // Wyczyść zalogowanego użytkownika z stanu
-    localStorage.removeItem('user'); // Usuń informacje o zalogowanym użytkowniku z localStorage
+    setUser(null);
+    localStorage.removeItem('user');
   };
 
   useEffect(() => {
-    // Sprawdź, czy użytkownik jest już zalogowany w localStorage
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       const userData = JSON.parse(storedUser);
-      setUser(userData); // Ustaw zalogowanego użytkownika w stanie
+      setUser(userData);
     }
   }, []);
 
@@ -90,7 +85,7 @@ const Login = () => {
             required
           />
         </div>
-        {user ? ( // Jeśli użytkownik jest zalogowany
+        {user ? (
           <button type="button" className="login-button" onClick={handleLogout}>
             Wyloguj
           </button>
@@ -102,7 +97,8 @@ const Login = () => {
       </form>
       <div>
         <p className="login-info">
-          Nie masz jeszcze konta? <Link to="/register">{user ? 'WYLOGUJ' : 'Zarejestruj się'}</Link>
+          Nie masz jeszcze konta?{' '}
+          <Link to="/register">{user ? 'WYLOGUJ' : 'Zarejestruj się'}</Link>
         </p>
       </div>
     </div>

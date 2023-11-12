@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/Artworks.css';
 import Tattoos from './Tattoos';
-import slides3 from '../assets/tattoo.json';
+import slides3 from '../models/tattoo.json';
 
 import {Swiper,SwiperSlide} from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
