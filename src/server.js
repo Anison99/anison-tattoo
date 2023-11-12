@@ -111,11 +111,51 @@ app.post('/login', passport.authenticate('local', {
   res.json({ message: 'Login successful' });
 });
 
+// Dodaj obsługę ścieżki /api/messages
+app.post('/api/messages', (req, res) => {
+  try {
+    const { content } = req.body;
+
+    // Sprawdź, czy użytkownik jest zalogowany
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // Pobierz ID zalogowanego użytkownika
+    const userId = req.user.id;
+
+    // Odczytaj istniejące wiadomości z pliku (lub z bazy danych)
+    const messages = JSON.parse(fs.readFileSync(messagesFilePath));
+
+    // Generuj unikalne ID dla nowej wiadomości
+    const messageId = Date.now().toString();
+
+    // Utwórz nową wiadomość z przypisanym identyfikatorem użytkownika
+    const newMessage = {
+      id: messageId,
+      userId: userId,
+      content,
+    };
+
+    // Dodaj nową wiadomość do listy wiadomości
+    messages.push(newMessage);
+
+    // Zapisz zaktualizowaną listę wiadomości do pliku (lub bazy danych)
+    fs.writeFileSync(messagesFilePath, JSON.stringify(messages, null, 2));
+
+    // Odpowiedz klientowi informacją o sukcesie
+    res.status(200).json({ message: 'Message sent successfully', newMessage });
+  } catch (error) {
+    console.error('Błąd wysyłania wiadomości:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas wysyłania wiadomości' });
+  }
+});
+
 // Przykładowa obsługa wysyłania wiadomości
 app.post('/send-message', (req, res) => {
-  const { message } = req.body;
+  const { content } = req.body;
   // Tutaj można dodać kod obsługi wysyłania wiadomości, np. zapis do pliku lub bazy danych
-  console.log('Received message:', message);
+  console.log('Received message:', content);
   res.json({ message: 'Message sent successfully' });
 });
 
@@ -253,7 +293,6 @@ app.get('/api/user/sessions', (req, res) => {
     res.status(500).json({ message: 'Wystąpił błąd podczas pobierania sesji użytkownika' });
   }
 });
-
 
 const port = process.env.PORT || 5000;
 
