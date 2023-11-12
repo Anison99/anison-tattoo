@@ -125,9 +125,7 @@ function Profile() {
         .then((response) => response.json())
         .then((data) => {
             console.log(`Odwołano sesję o ID: ${sessionId}`);
-            
-            // Zaktualizuj stan sesji, usuwając odwołaną sesję
-            setSessions((prevSessions) => prevSessions.filter((session) => session.id !== sessionId));
+            setSessions((prevSessions) => prevSessions.filter((session) => session.id !== sessionId)); // Zaktualizuj stan sesji, usuwając odwołaną sesję
         })
         .catch((error) => {
             console.error('Błąd odwoływania sesji:', error);

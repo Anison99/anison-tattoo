@@ -1,4 +1,3 @@
-// Serwer API
 const express = require('express');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -8,7 +7,6 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const crypto = require('crypto');
 require('dotenv').config();
 
 const sessionSecret = process.env.SESSION_SECRET || 'default-secret-key';
@@ -106,44 +104,31 @@ app.post('/register', async (req, res) => {
 app.post('/login', passport.authenticate('local', {
   failureFlash: true,
 }), (req, res) => {
-  // Ta część zostanie osiągnięta tylko w przypadku pomyślnego logowania
-  console.log('User logged in:', req.user.username);
+  console.log('User logged in:', req.user.username); // tylko przy poprawnym zalogowaniu
   res.json({ message: 'Login successful' });
 });
 
-// Dodaj obsługę ścieżki /api/messages
+// Wysyłanie wiadomości - obsługa /api/messages
 app.post('/api/messages', (req, res) => {
   try {
     const { content } = req.body;
 
-    // Sprawdź, czy użytkownik jest zalogowany
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-
-    // Pobierz ID zalogowanego użytkownika
     const userId = req.user.id;
-
-    // Odczytaj istniejące wiadomości z pliku (lub z bazy danych)
     const messages = JSON.parse(fs.readFileSync(messagesFilePath));
-
-    // Generuj unikalne ID dla nowej wiadomości
     const messageId = Date.now().toString();
-
-    // Utwórz nową wiadomość z przypisanym identyfikatorem użytkownika
     const newMessage = {
       id: messageId,
       userId: userId,
       content,
     };
 
-    // Dodaj nową wiadomość do listy wiadomości
     messages.push(newMessage);
 
-    // Zapisz zaktualizowaną listę wiadomości do pliku (lub bazy danych)
     fs.writeFileSync(messagesFilePath, JSON.stringify(messages, null, 2));
 
-    // Odpowiedz klientowi informacją o sukcesie
     res.status(200).json({ message: 'Message sent successfully', newMessage });
   } catch (error) {
     console.error('Błąd wysyłania wiadomości:', error);
@@ -151,15 +136,14 @@ app.post('/api/messages', (req, res) => {
   }
 });
 
-// Przykładowa obsługa wysyłania wiadomości
+// Wysyłanie wiadomości 
 app.post('/send-message', (req, res) => {
   const { content } = req.body;
-  // Tutaj można dodać kod obsługi wysyłania wiadomości, np. zapis do pliku lub bazy danych
   console.log('Received message:', content);
   res.json({ message: 'Message sent successfully' });
 });
 
-// Dodaj obsługę ścieżki /api/success
+// Obsługa ścieżki /api/success
 app.get('/api/success', (req, res) => {
   res.json({ message: 'Success!' });
 });
@@ -167,19 +151,10 @@ app.get('/api/success', (req, res) => {
 // Obsługa rezerwacji sesji
 app.post('/api/sessions', (req, res) => {
   try {
-    // Odczytaj dane sesji z ciała żądania
     const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
-
-    // Pobierz identyfikator zalogowanego użytkownika z sesji
     const userId = req.isAuthenticated() ? req.user.id : null;
-
-    // Pobierz istniejące sesje z pliku (lub z bazy danych)
     const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
-
-    // Generuj unikalne ID dla nowej sesji
     const sessionId = Date.now().toString();
-
-    // Utwórz nową sesję z przypisanym identyfikatorem użytkownika
     const newSession = {
       id: sessionId,
       userId: userId, // Dodanie identyfikatora użytkownika
@@ -190,11 +165,9 @@ app.post('/api/sessions', (req, res) => {
 
     // Dodaj nową sesję do listy sesji
     sessions.push(newSession);
-
     // Zapisz zaktualizowaną listę sesji do pliku (lub bazy danych)
     fs.writeFileSync(sessionsFilePath, JSON.stringify(sessions, null, 2));
 
-    // Odpowiedz klientowi informacją o sukcesie
     res.status(200).json({ message: 'Rezerwacja sesji zakończona sukcesem', session: newSession });
   } catch (error) {
     console.error('Błąd rezerwacji sesji:', error);
@@ -206,22 +179,14 @@ app.post('/api/sessions', (req, res) => {
 app.put('/api/sessions/:sessionId', (req, res) => {
   try {
     const sessionId = req.params.sessionId;
-
-    // Odczytaj dane sesji z ciała żądania
     const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
-
-    // Pobierz istniejące sesje z pliku (lub z bazy danych)
     const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
-
-    // Znajdź sesję do edycji
     const editedSessionIndex = sessions.findIndex(session => session.id === sessionId);
 
-    // Sprawdź, czy sesja istnieje
     if (editedSessionIndex === -1) {
       return res.status(404).json({ message: 'Sesja nie istnieje' });
     }
 
-    // Edytuj dane sesji
     sessions[editedSessionIndex] = {
       ...sessions[editedSessionIndex],
       sessionDate,
@@ -229,10 +194,8 @@ app.put('/api/sessions/:sessionId', (req, res) => {
       messageToTattooArtist,
     };
 
-    // Zapisz zaktualizowaną listę sesji do pliku (lub bazy danych)
     fs.writeFileSync(sessionsFilePath, JSON.stringify(sessions, null, 2));
 
-    // Odpowiedz klientowi informacją o sukcesie
     res.status(200).json({ message: 'Edycja sesji zakończona sukcesem', session: sessions[editedSessionIndex] });
   } catch (error) {
     console.error('Błąd edycji sesji:', error);
@@ -240,29 +203,21 @@ app.put('/api/sessions/:sessionId', (req, res) => {
   }
 });
 
-// Dodaj obsługę DELETE dla ścieżki /api/sessions/:sessionId
+// Obsługa usuwania sesji
 app.delete('/api/sessions/:sessionId', (req, res) => {
   try {
       const sessionId = req.params.sessionId;
-
-      // Odczytaj istniejące sesje z pliku (lub z bazy danych)
       const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
-
-      // Znajdź indeks sesji do odwołania
       const sessionIndex = sessions.findIndex((session) => session.id === sessionId);
 
-      // Sprawdź, czy sesja została znaleziona
       if (sessionIndex === -1) {
           return res.status(404).json({ message: 'Session not found' });
       }
 
-      // Usuń sesję z listy sesji
       const canceledSession = sessions.splice(sessionIndex, 1)[0];
 
-      // Zapisz zaktualizowaną listę sesji do pliku (lub bazy danych)
       fs.writeFileSync(sessionsFilePath, JSON.stringify(sessions, null, 2));
 
-      // Odpowiedz klientowi potwierdzeniem odwołania sesji
       res.status(200).json({ message: 'Session canceled successfully', canceledSession });
   } catch (error) {
       console.error('Błąd odwoływania sesji:', error);
@@ -270,23 +225,16 @@ app.delete('/api/sessions/:sessionId', (req, res) => {
   }
 });
 
+// Pbranie danych o sesji 
 app.get('/api/user/sessions', (req, res) => {
   try {
-    // Sprawdź, czy użytkownik jest zalogowany
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-
-    // Pobierz ID zalogowanego użytkownika
     const userId = req.user.id;
-
-    // Odczytaj dane sesji z pliku (lub z bazy danych)
     const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
-
-    // Filtruj sesje, aby uzyskać tylko te przypisane do zalogowanego użytkownika
     const userSessions = sessions.filter(session => session.userId === userId);
 
-    // Odpowiedz klientowi z danymi sesji użytkownika
     res.status(200).json({ sessions: userSessions });
   } catch (error) {
     console.error('Błąd pobierania sesji użytkownika:', error);
