@@ -104,6 +104,7 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
+    margin-right: 10px;
   }
   
   .appointments button:hover {

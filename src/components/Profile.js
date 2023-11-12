@@ -5,6 +5,7 @@ import '../css/Profile.css';
 function Profile() {
   const navigate = useNavigate();
   const [sessionData, setSessionData] = useState({
+    sessionId: null,
     sessionDate: '',
     sessionTime: '',
     messageToTattooArtist: '',
@@ -31,64 +32,134 @@ function Profile() {
   const handleSessionSubmit = (e) => {
     e.preventDefault();
 
-    fetch('http://localhost:5000/api/sessions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sessionDate: sessionData.sessionDate,
-        sessionTime: sessionData.sessionTime,
-        messageToTattooArtist: sessionData.messageToTattooArtist,
-      }),
+    if (sessionData.sessionId) {
+      // Edytuj sesję
+      fetch(`http://localhost:5000/api/sessions/${sessionData.sessionId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionDate: sessionData.sessionDate,
+          sessionTime: sessionData.sessionTime,
+          messageToTattooArtist: sessionData.messageToTattooArtist,
+        }),
+        credentials: 'include',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Edytowano sesję:', data);
+
+          // Po edycji sesji odśwież listę sesji
+          fetchSessions();
+        })
+        .catch((error) => {
+          console.error('Błąd edycji sesji:', error);
+        });
+    } else {
+      // Nowa rezerwacja sesji
+      fetch('http://localhost:5000/api/sessions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionDate: sessionData.sessionDate,
+          sessionTime: sessionData.sessionTime,
+          messageToTattooArtist: sessionData.messageToTattooArtist,
+        }),
+        credentials: 'include',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Zapisano się na sesję:', data);
+
+          // Po zapisaniu sesji odśwież listę sesji
+          fetchSessions();
+        })
+        .catch((error) => {
+          console.error('Błąd zapisywania na sesję:', error);
+        });
+    }
+
+    // Zresetuj stan formularza
+    setSessionData({
+      sessionId: null,
+      sessionDate: '',
+      sessionTime: '',
+      messageToTattooArtist: '',
+    });
+  };
+
+  const fetchSessions = () => {
+    // Pobierz rzeczywiste rezerwacje sesji użytkownika po zalogowaniu
+    fetch('http://localhost:5000/api/user/sessions', {
+      method: 'GET',
       credentials: 'include',
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('Zapisano się na sesję:', data);
-
-        // Po zapisaniu sesji możesz odświeżyć listę sesji, aby pokazać aktualne dane użytkownika
-        // Możesz użyć funkcji pobierającej sesje, która jest już w useEffect
-
-        // Przekierowanie na stronę główną
-        navigate('/'); // Poprawienie błędu w kodzie
+        setSessions(data.sessions);
       })
       .catch((error) => {
-        console.error('Błąd zapisywania na sesję:', error);
+        console.error('Błąd pobierania sesji:', error);
       });
   };
 
-  const handleSendMessage = () => {
-    fetch('http://localhost:5000/api/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        content: message,
-      }),
-      credentials: 'include',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Wysłano wiadomość:', data);
-      })
-      .catch((error) => {
-        console.error('Błąd wysyłania wiadomości:', error);
-      });
+  const handleEditSession = (session) => {
+    // Ustaw dane sesji w formularzu do edycji
+    setSessionData({
+      sessionId: session.id,
+      sessionDate: session.sessionDate,
+      sessionTime: session.sessionTime,
+      messageToTattooArtist: session.messageToTattooArtist,
+    });
   };
 
   const handleCancelSession = (sessionId) => {
-    // Pusta funkcja, która nic nie robi
-    console.log(`Odwołano sesję o ID: ${sessionId}`);
-  };
+    // Wyślij żądanie do serwera w celu odwołania sesji
+    fetch(`http://localhost:5000/api/sessions/${sessionId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(`Odwołano sesję o ID: ${sessionId}`);
+            
+            // Zaktualizuj stan sesji, usuwając odwołaną sesję
+            setSessions((prevSessions) => prevSessions.filter((session) => session.id !== sessionId));
+        })
+        .catch((error) => {
+            console.error('Błąd odwoływania sesji:', error);
+        });
+};
+  
+const handleSendMessage = () => {
+  fetch('http://localhost:5000/api/messages', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          content: message,
+      }),
+      credentials: 'include',
+  })
+      .then((response) => response.json())
+      .then((data) => {
+          console.log('Wysłano wiadomość:', data);
+      })
+      .catch((error) => {
+          console.error('Błąd wysyłania wiadomości:', error);
+      });
+};
 
   return (
     <div>
       <h2 className="profile-title">Profil użytkownika</h2>
 
       <div className="session-form">
-        <h3>Zapisz się na sesję</h3>
+        <h3>{sessionData.sessionId ? 'Edytuj sesję' : 'Zapisz się na sesję'}</h3>
         <form onSubmit={handleSessionSubmit}>
           <input
             type="date"
@@ -107,7 +178,7 @@ function Profile() {
             }
             placeholder="Wiadomość do tatuatora"
           />
-          <button type="submit">Zapisz się</button>
+          <button type="submit">{sessionData.sessionId ? 'Zapisz zmiany' : 'Zapisz się'}</button>
         </form>
       </div>
 
@@ -119,6 +190,7 @@ function Profile() {
               <p>Data: {session.sessionDate}</p>
               <p>Godzina: {session.sessionTime}</p>
               <p>Wiadomość do tatuatora: {session.messageToTattooArtist}</p>
+              <button onClick={() => handleEditSession(session)}>Edytuj sesję</button>
               <button onClick={() => handleCancelSession(session.id)}>Odwołaj sesję</button>
             </li>
           ))}

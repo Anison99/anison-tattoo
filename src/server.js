@@ -162,6 +162,74 @@ app.post('/api/sessions', (req, res) => {
   }
 });
 
+// Edytuj sesję
+app.put('/api/sessions/:sessionId', (req, res) => {
+  try {
+    const sessionId = req.params.sessionId;
+
+    // Odczytaj dane sesji z ciała żądania
+    const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
+
+    // Pobierz istniejące sesje z pliku (lub z bazy danych)
+    const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
+
+    // Znajdź sesję do edycji
+    const editedSessionIndex = sessions.findIndex(session => session.id === sessionId);
+
+    // Sprawdź, czy sesja istnieje
+    if (editedSessionIndex === -1) {
+      return res.status(404).json({ message: 'Sesja nie istnieje' });
+    }
+
+    // Edytuj dane sesji
+    sessions[editedSessionIndex] = {
+      ...sessions[editedSessionIndex],
+      sessionDate,
+      sessionTime,
+      messageToTattooArtist,
+    };
+
+    // Zapisz zaktualizowaną listę sesji do pliku (lub bazy danych)
+    fs.writeFileSync(sessionsFilePath, JSON.stringify(sessions, null, 2));
+
+    // Odpowiedz klientowi informacją o sukcesie
+    res.status(200).json({ message: 'Edycja sesji zakończona sukcesem', session: sessions[editedSessionIndex] });
+  } catch (error) {
+    console.error('Błąd edycji sesji:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas edycji sesji' });
+  }
+});
+
+// Dodaj obsługę DELETE dla ścieżki /api/sessions/:sessionId
+app.delete('/api/sessions/:sessionId', (req, res) => {
+  try {
+      const sessionId = req.params.sessionId;
+
+      // Odczytaj istniejące sesje z pliku (lub z bazy danych)
+      const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
+
+      // Znajdź indeks sesji do odwołania
+      const sessionIndex = sessions.findIndex((session) => session.id === sessionId);
+
+      // Sprawdź, czy sesja została znaleziona
+      if (sessionIndex === -1) {
+          return res.status(404).json({ message: 'Session not found' });
+      }
+
+      // Usuń sesję z listy sesji
+      const canceledSession = sessions.splice(sessionIndex, 1)[0];
+
+      // Zapisz zaktualizowaną listę sesji do pliku (lub bazy danych)
+      fs.writeFileSync(sessionsFilePath, JSON.stringify(sessions, null, 2));
+
+      // Odpowiedz klientowi potwierdzeniem odwołania sesji
+      res.status(200).json({ message: 'Session canceled successfully', canceledSession });
+  } catch (error) {
+      console.error('Błąd odwoływania sesji:', error);
+      res.status(500).json({ message: 'Wystąpił błąd podczas odwoływania sesji' });
+  }
+});
+
 app.get('/api/user/sessions', (req, res) => {
   try {
     // Sprawdź, czy użytkownik jest zalogowany
