@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Zmiana useHistory na useNavigate
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/Login.css';
 
 const Login = () => {
@@ -9,7 +9,7 @@ const Login = () => {
   });
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Zmiana useHistory na useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,10 +32,11 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Zalogowano:', data);
+        localStorage.setItem('user', JSON.stringify(data));
         setUser(data);
+        // Przekieruj na stronę główną po zalogowaniu
+        navigate('/');
 
-        // Przekieruj do odpowiedniej ścieżki na frontendzie po zalogowaniu
-        navigate('/dashboard'); // Zmiana history.push na navigate
       } else {
         const errorData = await response.json();
         setError(errorData.message);

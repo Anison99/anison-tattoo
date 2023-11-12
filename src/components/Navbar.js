@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/Navbar.css';
 import myLogo from '../images/logo96.png';
 import SocialMedia from './SocialMedia';
-import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const [loggedIn, setLoggedIn] = useState(false); // Dodaj stan zalogowanego użytkownika
+  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate(); // Dodaj useNavigate
 
-  // Funkcja do obsługi wylogowania
   const handleLogout = () => {
-    // Wyczyść lokalny stan zalogowanego użytkownika
     localStorage.removeItem('user');
     setLoggedIn(false);
+    navigate('/'); // Przekieruj użytkownika na stronę główną po wylogowaniu
+    window.location.replace('/'); // Przeładuj stronę
   };
 
   const handleClick = () => setClick(!click);
@@ -31,18 +31,37 @@ function Navbar() {
   useEffect(() => {
     checkButtonSize();
     window.addEventListener('resize', checkButtonSize);
+
     return () => {
       window.removeEventListener('resize', checkButtonSize);
     };
   }, []);
 
-  // Sprawdź stan zalogowanego użytkownika po każdym odświeżeniu strony
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setLoggedIn(true);
-    }
-  }, []);
+    const checkLoggedInStatus = () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    };
+
+    checkLoggedInStatus(); // Sprawdź status zalogowania przy pierwszym renderowaniu
+
+    // Nasłuchuj zmiany statusu zalogowania po zalogowaniu
+    window.addEventListener('storage', () => {
+      checkLoggedInStatus();
+      // Jeśli użytkownik zaloguje się na innej karcie/przeglądarce, wywołamy funkcję sprawdzającą status
+      navigate('/');
+    });
+
+    return () => {
+      // Usuń nasłuchiwacz zmiany wielkości okna i nasłuchiwacz storage
+      window.removeEventListener('resize', checkButtonSize);
+      window.removeEventListener('storage', checkLoggedInStatus);
+    };
+  }, [navigate]); // Dodaj navigate jako zależność
 
   return (
     <>
@@ -72,27 +91,28 @@ function Navbar() {
               </Link>
             </li>
             <li className='nav-item'>
-  {loggedIn ? ( // Sprawdź, czy użytkownik jest zalogowany
-    <>
-      <Link to="/profile" className='nav-links' onClick={closeMobileMenu}>
-        Profil
-      </Link>
-      <Button buttonStyle='btn--outline' onClick={handleLogout}>
-        Wyloguj
-      </Button>
-    </>
-  ) : (
-    <Link to="/login" className='nav-links' onClick={closeMobileMenu}>
-      Zaloguj
-    </Link>
-  )}
-</li>
-
+              {loggedIn ? (
+                <span className='nav-links' onClick={() => { navigate('/profile'); closeMobileMenu(); }}>
+                  Profil
+                </span>
+              ) : (
+                <Link to="/login" className='nav-links' onClick={closeMobileMenu}>
+                  Zaloguj
+                </Link>
+              )}
+            </li>
+            <li className='nav-item'>
+              {loggedIn && (
+                <button className='btn--outline' onClick={handleLogout}>
+                  Wyloguj
+                </button>
+              )}
+            </li>
           </ul>
-          {button && !loggedIn && ( // Wyświetl przycisk "Zarejestruj" tylko jeśli nie jesteś zalogowany
-            <Button buttonStyle='btn--outline' linkTo="/register">
-              Zarejestruj
-            </Button>
+          {button && !loggedIn && (
+            <button className='btn--outline' onClick={closeMobileMenu}>
+              <Link to="/register">Zarejestruj</Link>
+            </button>
           )}
         </div>
       </nav>

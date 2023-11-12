@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useHistory } from 'react';
-//import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate  } from 'react-router-dom'; // Dodaj useHistory
 import '../css/Profile.css';
 
 function Profile() {
-  const history = useHistory();
-    const [sessionData, setSessionData] = useState({
+  const history = useNavigate();
+  const [sessionData, setSessionData] = useState({
     sessionDate: '',
     sessionTime: '',
     messageToTattooArtist: '',
@@ -29,7 +29,7 @@ function Profile() {
         messageToTattooArtist: 'Mam kilka pomysłów na tatuaż',
       },
     ];
-  
+
     setSessions(sampleSessions);
   }, []);
 
@@ -56,7 +56,7 @@ function Profile() {
         // Możesz użyć funkcji pobierającej sesje, która jest już w useEffect
 
         // Przekierowanie na stronę główną
-        history.push('/');
+        history.push('/'); // Przekierowanie do komponentu głównego
       })
       .catch((error) => {
         console.error('Błąd zapisywania na sesję:', error);
@@ -82,13 +82,12 @@ function Profile() {
         console.error('Błąd wysyłania wiadomości:', error);
       });
   };
-  
+
   const handleCancelSession = (sessionId) => {
     // Pusta funkcja, która nic nie robi
     console.log(`Odwołano sesję o ID: ${sessionId}`);
   };
-  
-  
+
   return (
     <div>
       <h2 className="profile-title">Profil użytkownika</h2>
