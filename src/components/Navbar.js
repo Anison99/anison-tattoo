@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/Navbar.css';
+import { Button } from './Button';
 import myLogo from '../images/logo96.png';
 import SocialMedia from './SocialMedia';
 
@@ -103,16 +104,16 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               {loggedIn && (
-                <button className='btn--outline' onClick={handleLogout}>
+                <Button buttonStyle='btn--outline' onClick={handleLogout}>
                   Wyloguj
-                </button>
+                </Button>
               )}
             </li>
           </ul>
           {button && !loggedIn && (
-            <button className='btn--outline' onClick={closeMobileMenu}>
-              <Link to="/register">Zarejestruj</Link>
-            </button>
+            <Button buttonStyle='btn--outline' linkTo="/register">
+              Zarejestruj
+            </Button>
           )}
         </div>
       </nav>
