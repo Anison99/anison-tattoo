@@ -1,3 +1,4 @@
+// Serwer API
 const express = require('express');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -28,7 +29,7 @@ app.use(session({
 }));
 app.use(flash());
 app.use(passport.initialize());
-app.use(passport.session()); // Dodaj obsługę sesji dla Passport
+app.use(passport.session());
 
 passport.use(new LocalStrategy(
   { usernameField: 'email' },
@@ -122,6 +123,65 @@ app.post('/send-message', (req, res) => {
 app.get('/api/success', (req, res) => {
   res.json({ message: 'Success!' });
 });
+
+// Obsługa rezerwacji sesji
+app.post('/api/sessions', (req, res) => {
+  try {
+    // Odczytaj dane sesji z ciała żądania
+    const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
+
+    // Pobierz istniejące sesje z pliku (lub z bazy danych)
+    const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
+
+    // Generuj unikalne ID dla nowej sesji
+    const sessionId = Date.now().toString();
+
+    // Utwórz nową sesję
+    const newSession = {
+      id: sessionId,
+      sessionDate,
+      sessionTime,
+      messageToTattooArtist,
+    };
+
+    // Dodaj nową sesję do listy sesji
+    sessions.push(newSession);
+
+    // Zapisz zaktualizowaną listę sesji do pliku (lub bazy danych)
+    fs.writeFileSync(sessionsFilePath, JSON.stringify(sessions, null, 2));
+
+    // Odpowiedz klientowi informacją o sukcesie
+    res.status(200).json({ message: 'Rezerwacja sesji zakończona sukcesem', session: newSession });
+  } catch (error) {
+    console.error('Błąd rezerwacji sesji:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas rezerwacji sesji' });
+  }
+});
+
+app.get('/api/user/sessions', (req, res) => {
+  try {
+    // Sprawdź, czy użytkownik jest zalogowany
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // Pobierz ID zalogowanego użytkownika
+    const userId = req.user.id;
+
+    // Odczytaj dane sesji z pliku (lub z bazy danych)
+    const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
+
+    // Filtruj sesje, aby uzyskać tylko te przypisane do zalogowanego użytkownika
+    const userSessions = sessions.filter(session => session.userId === userId);
+
+    // Odpowiedz klientowi z danymi sesji użytkownika
+    res.status(200).json({ sessions: userSessions });
+  } catch (error) {
+    console.error('Błąd pobierania sesji użytkownika:', error);
+    res.status(500).json({ message: 'Wystąpił błąd podczas pobierania sesji użytkownika' });
+  }
+});
+
 
 const port = process.env.PORT || 5000;
 

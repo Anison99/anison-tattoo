@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate  } from 'react-router-dom'; // Dodaj useHistory
+import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
 
 function Profile() {
@@ -14,29 +14,24 @@ function Profile() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // dodać kod do pobierania rezerwacji sesji po zalogowaniu użytkownika
-    const sampleSessions = [
-      {
-        id: 1,
-        sessionDate: '2023-11-15',
-        sessionTime: '14:00',
-        messageToTattooArtist: 'Proszę o wzór tatuażu',
-      },
-      {
-        id: 2,
-        sessionDate: '2023-12-05',
-        sessionTime: '12:30',
-        messageToTattooArtist: 'Mam kilka pomysłów na tatuaż',
-      },
-    ];
-
-    setSessions(sampleSessions);
-  }, []);
+    // Pobierz rzeczywiste rezerwacje sesji użytkownika po zalogowaniu
+    fetch('http://localhost:5000/api/user/sessions', {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSessions(data.sessions);
+      })
+      .catch((error) => {
+        console.error('Błąd pobierania sesji:', error);
+      });
+  }, []); 
 
   const handleSessionSubmit = (e) => {
     e.preventDefault();
 
-    fetch('/api/sessions', {
+    fetch('http://localhost:5000/api/sessions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +51,7 @@ function Profile() {
         // Możesz użyć funkcji pobierającej sesje, która jest już w useEffect
 
         // Przekierowanie na stronę główną
-        history.push('/'); // Przekierowanie do komponentu głównego
+        history('/'); // Przekierowanie do komponentu głównego
       })
       .catch((error) => {
         console.error('Błąd zapisywania na sesję:', error);
@@ -64,7 +59,7 @@ function Profile() {
   };
 
   const handleSendMessage = () => {
-    fetch('/api/messages', {
+    fetch('http://localhost:5000/api/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +67,7 @@ function Profile() {
       body: JSON.stringify({
         content: message,
       }),
-      credentials: 'include', // Dodaj tę linię dla uwzględnienia ciasteczka sesji
+      credentials: 'include',
     })
       .then((response) => response.json())
       .then((data) => {
