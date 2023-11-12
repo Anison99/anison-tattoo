@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
 
 function Profile() {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [sessionData, setSessionData] = useState({
     sessionDate: '',
     sessionTime: '',
@@ -26,7 +26,7 @@ function Profile() {
       .catch((error) => {
         console.error('Błąd pobierania sesji:', error);
       });
-  }, []); 
+  }, []);
 
   const handleSessionSubmit = (e) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ function Profile() {
         // Możesz użyć funkcji pobierającej sesje, która jest już w useEffect
 
         // Przekierowanie na stronę główną
-        history('/'); // Przekierowanie do komponentu głównego
+        navigate('/'); // Poprawienie błędu w kodzie
       })
       .catch((error) => {
         console.error('Błąd zapisywania na sesję:', error);

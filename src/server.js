@@ -130,15 +130,19 @@ app.post('/api/sessions', (req, res) => {
     // Odczytaj dane sesji z ciała żądania
     const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
 
+    // Pobierz identyfikator zalogowanego użytkownika z sesji
+    const userId = req.isAuthenticated() ? req.user.id : null;
+
     // Pobierz istniejące sesje z pliku (lub z bazy danych)
     const sessions = JSON.parse(fs.readFileSync(sessionsFilePath));
 
     // Generuj unikalne ID dla nowej sesji
     const sessionId = Date.now().toString();
 
-    // Utwórz nową sesję
+    // Utwórz nową sesję z przypisanym identyfikatorem użytkownika
     const newSession = {
       id: sessionId,
+      userId: userId, // Dodanie identyfikatora użytkownika
       sessionDate,
       sessionTime,
       messageToTattooArtist,
