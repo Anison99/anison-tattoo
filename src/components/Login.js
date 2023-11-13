@@ -34,9 +34,7 @@ const Login = () => {
         console.log('Zalogowano:', data);
         localStorage.setItem('user', JSON.stringify(data));
         setUser(data);
-        // Przekieruj na stronę główną po zalogowaniu
         navigate('/');
-
       } else {
         const errorData = await response.json();
         setError(errorData.message);

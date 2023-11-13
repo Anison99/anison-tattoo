@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import '../css/Register.css';
 
 const Register = () => {
@@ -9,7 +9,8 @@ const Register = () => {
     password: '',
   });
 
-  const [error, setError] = useState(null); // Dodaj stan do obsługi błędów
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,8 +33,9 @@ const Register = () => {
 
       if (response.ok) {
         console.log('Rejestracja zakończona sukcesem');
+        navigate('/'); // przekieruj na strone główną po rejestracji 
       } else {
-        const errorMessage = await response.text(); // Pobierz komunikat o błędzie z odpowiedzi
+        const errorMessage = await response.text();
         setError(`Błąd podczas rejestracji: ${errorMessage}`);
         console.error('Błąd podczas rejestracji:', errorMessage);
       }
@@ -47,7 +49,7 @@ const Register = () => {
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
         <h2>Rejestracja</h2>
-        {error && <p className="error-message">{error}</p>} {/* Wyświetl błąd, jeśli istnieje */}
+        {error && <p className="error-message">{error}</p>}
         <div className="form-group">
           <label htmlFor="username">Nazwa użytkownika:</label>
           <input
