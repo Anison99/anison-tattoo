@@ -1,11 +1,13 @@
 import React from 'react';
 import '../css/AboutUs.css';
+import { useLanguage } from '../language/LanguageContext.js';
 
 
 function AboutUs() {
+  const { t, language } = useLanguage();
   return (
     <div data-aos="fade-down" data-aos-duration="2000">
-      <h1 className='about-title' alt='about-us'>O NAS</h1>
+      <h1 className='about-title' alt='about-us'>{t('aboutUsHead')}</h1>
       <hr></hr>
       <div className='container'>
         <img src='https://i.imgur.com/BJnKWzw.png' alt='artist1' className='rounded-image'/>

@@ -4,16 +4,18 @@ import '../css/Footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faPinterest, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useLanguage } from '../language/LanguageContext.js';
 
 function Footer() {
+  const { t, language } = useLanguage();
   return (
     <div className='footer'>
       <div className='sb__footer section_padding'>
         <div className='sb__footer-links'>
           <div className='sb_footer-links-div'>
-            <h4 style={{ color: 'white', fontSize: '20px' }}>Kontakt</h4> 
+            <h4 style={{ color: 'white', fontSize: '20px' }}>{t('contact')}</h4> 
             <p>
-              <FontAwesomeIcon icon={faPhone} className='icons-custom' /> Telefon: +48 123 456 789
+              <FontAwesomeIcon icon={faPhone} className='icons-custom' /> {t('phone')}: +48 123 456 789
             </p>
             <p>
               <FontAwesomeIcon icon={faEnvelope} className='icons-custom' /> Email: kontakt@example.com
@@ -23,7 +25,7 @@ function Footer() {
                 <img src='https://i.imgur.com/qTGxBzc.png' alt='Logo' className='footer-logo' />
               </div>
           <div className='sb_footer-links-div'>
-            <h4 style={{ color: 'white', fontSize: '20px' }}>Media społecznościowe</h4>
+            <h4 style={{ color: 'white', fontSize: '20px' }}>{t('media')}</h4>
             <p>
               <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
                 <FontAwesomeIcon icon={faFacebookF} className='icons-custom' /> Facebook
@@ -47,9 +49,9 @@ function Footer() {
           </div>
         </div>
         <div className='sb__footer-copyright'>
-          <p>&copy; 2023 Anison Tattoo. Wykreowane na potrzeby pracy inzynierskiej Akademii Tarnowskiej.</p>
+          <p>&copy; 2023 Anison Tattoo. {t('credits')}</p>
           <p>
-            <a href="/regulamin">Regulamin</a> | <a href="mailto:info@example.com">Kontakt</a>
+            <a href="/regulamin">{t('reg')}</a> | <a href="mailto:info@example.com">{t('contact')}</a>
           </p>
         </div>
       </div>

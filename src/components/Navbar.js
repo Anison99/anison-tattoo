@@ -4,12 +4,36 @@ import '../css/Navbar.css';
 import { Button } from './Button';
 import myLogo from '../images/logo96.png';
 import SocialMedia from './SocialMedia';
+import { useLanguage } from '../language/LanguageContext.js';
+import i18n from '../language/i18n.js'; // Dodaj import i18n
 
 const Navbar = () => {
+  const { t, changeLanguage } = useLanguage(); // Dodaj import t
+
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  const handleLanguageChange = (language) => {
+    console.log('Changing language to:', language);
+    changeLanguage(language);
+  };
+
+  useEffect(() => {
+    const handleLanguageChangeOnStorage = () => {
+      const lang = localStorage.getItem('i18nextLng');
+      if (lang && i18n.language !== lang) {
+        changeLanguage(lang);
+      }
+    };
+
+    window.addEventListener('storage', handleLanguageChangeOnStorage);
+
+    return () => {
+      window.removeEventListener('storage', handleLanguageChangeOnStorage);
+    };
+  }, [changeLanguage]);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -48,21 +72,18 @@ const Navbar = () => {
       }
     };
 
-    checkLoggedInStatus(); // Sprawdź status zalogowania przy pierwszym renderowaniu
+    checkLoggedInStatus();
 
-    // Nasłuchuj zmiany statusu zalogowania po zalogowaniu
     window.addEventListener('storage', () => {
       checkLoggedInStatus();
-      // Jeśli użytkownik zaloguje się na innej karcie/przeglądarce, wywołamy funkcję sprawdzającą status
       navigate('/');
     });
 
     return () => {
-      // Usuń nasłuchiwacz zmiany wielkości okna i nasłuchiwacz storage
       window.removeEventListener('resize', checkButtonSize);
       window.removeEventListener('storage', checkLoggedInStatus);
     };
-  }, [navigate]); //navigate jako zależność
+  }, [navigate]);
 
   return (
     <>
@@ -70,51 +91,61 @@ const Navbar = () => {
         <div className="navbar-container">
           <Link to="/" className="navbar-logo">
             <img src={myLogo} alt="My Logo" />
-            <SocialMedia />
+            
           </Link>
+          <SocialMedia />
+          <div className="language-selector">
+            <button className="language-button" onClick={() => changeLanguage('pl')}>
+              PL
+            </button>
+            <button className="language-button" onClick={() => changeLanguage('en')}>
+              EN
+            </button>
+          </div>
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
           <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className='nav-item'>
               <Link to="/about" className='nav-links' onClick={closeMobileMenu}>
-                O nas
+                {t('aboutUs')}
               </Link>
             </li>
             <li className='nav-item'>
               <Link to="/artworks" className='nav-links' onClick={closeMobileMenu}>
-                Nasze prace
+                {t('artworks')}
               </Link>
             </li>
             <li className='nav-item'>
               <Link to="/contact" className='nav-links' onClick={closeMobileMenu}>
-                Kontakt
+                {t('contact')}
               </Link>
             </li>
             <li className='nav-item'>
               {loggedIn ? (
                 <span className='nav-links' onClick={() => { navigate('/profile'); closeMobileMenu(); }}>
-                  Profil
+                  {t('profile')}
                 </span>
               ) : (
                 <Link to="/login" className='nav-links' onClick={closeMobileMenu}>
-                  Zaloguj
+                  {t('login')}
                 </Link>
               )}
             </li>
             <li className='nav-item'>
               {loggedIn && (
                 <Button buttonStyle='btn--outline' onClick={handleLogout}>
-                  Wyloguj
+                  {t('logout')}
                 </Button>
               )}
             </li>
-          </ul>
-          {button && !loggedIn && (
+            {button && !loggedIn && (
             <Button buttonStyle='btn--outline' linkTo="/register">
-              Zarejestruj
+              {t('register')}
             </Button>
           )}
+          </ul>
+         
         </div>
       </nav>
     </>

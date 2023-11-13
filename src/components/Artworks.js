@@ -2,7 +2,6 @@ import React from 'react';
 import '../css/Artworks.css';
 import Tattoos from './Tattoos';
 import slides3 from '../models/tattoo.json';
-
 import {Swiper,SwiperSlide} from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/css';
@@ -10,10 +9,13 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
+import { useLanguage } from '../language/LanguageContext.js';
+
 function Artworks({slides2}) {
+  const { t, language } = useLanguage();
   return (
     <div data-aos="fade-down" data-aos-duration="2000">
-        <h1 className='about-title' alt='about-us'>NASZE PRACE</h1>
+        <h1 className='about-title' alt='about-us'>{t('artworksHead')}</h1>
       <hr></hr>
       <div className='slider-position'>
       <Swiper

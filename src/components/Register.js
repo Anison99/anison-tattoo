@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import '../css/Register.css';
+import { useLanguage } from '../language/LanguageContext.js';
 
 const Register = () => {
+  const { t, language } = useLanguage();
   const [userData, setUserData] = useState({
     username: '',
     email: '',
@@ -48,10 +50,10 @@ const Register = () => {
   return (
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
-        <h2>Rejestracja</h2>
+        <h2>{t('register')}</h2>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">
-          <label htmlFor="username">Nazwa użytkownika:</label>
+          <label htmlFor="username">{t('user')}:</label>
           <input
             type="text"
             name="username"
@@ -62,7 +64,7 @@ const Register = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Adres email:</label>
+          <label htmlFor="email">{t('email')}:</label>
           <input
             type="email"
             name="email"
@@ -73,7 +75,7 @@ const Register = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Hasło:</label>
+          <label htmlFor="password">{t('pass')}:</label>
           <input
             type="password"
             name="password"
@@ -84,12 +86,12 @@ const Register = () => {
           />
         </div>
         <button type="submit" className="register-button">
-          Zarejestruj się
+        {t('register')}
         </button>
       </form>
       <div>
         <p className="register-info">
-          Masz już konto? <Link to="/login">Zaloguj się!</Link>
+        {t('quest3')} <Link to="/login">{t('quest4')}</Link>
         </p>
       </div>
     </div>

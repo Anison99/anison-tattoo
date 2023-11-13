@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/Login.css';
+import { useLanguage } from '../language/LanguageContext.js';
 
 const Login = () => {
+  const { t, language } = useLanguage();
   const [userData, setUserData] = useState({
     email: '',
     password: '',
@@ -60,10 +62,10 @@ const Login = () => {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Logowanie</h2>
+        <h2>{t('login')}</h2>
         {error && <p className="error-message">{error}</p>}
         <div className="form-group">
-          <label htmlFor="email">Adres email:</label>
+          <label htmlFor="email">{t('email')}:</label>
           <input
             type="email"
             name="email"
@@ -74,7 +76,7 @@ const Login = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Hasło:</label>
+          <label htmlFor="password">{t('pass')}:</label>
           <input
             type="password"
             name="password"
@@ -86,18 +88,18 @@ const Login = () => {
         </div>
         {user ? (
           <button type="button" className="login-button" onClick={handleLogout}>
-            Wyloguj
+            {t('logout')}
           </button>
         ) : (
           <button type="submit" className="login-button">
-            Zaloguj się
+            {t('login')}
           </button>
         )}
       </form>
       <div>
         <p className="login-info">
-          Nie masz jeszcze konta?{' '}
-          <Link to="/register">{user ? 'WYLOGUJ' : 'Zarejestruj się'}</Link>
+        {t('quest1')} {' '}
+          <Link to="/register">{user ? 'WYLOGUJ' : t('quest2') }</Link>
         </p>
       </div>
     </div>

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
+import { useLanguage } from '../language/LanguageContext.js';
+
 
 const Profile = () => {
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [sessionData, setSessionData] = useState({
     sessionId: null,
@@ -116,10 +119,10 @@ const Profile = () => {
 
   return (
     <div>
-      <h2 className="profile-title">Profil użytkownika</h2>
+      <h2 className="profile-title">{t('user1')}</h2>
 
       <div className="session-form">
-        <h3>{sessionData.sessionId ? 'Edytuj sesję' : 'Zapisz się na sesję'}</h3>
+        <h3>{sessionData.sessionId ? t('session1') : t('session2')}</h3>
         <form onSubmit={handleSessionSubmit}>
           <input
             type="date"
@@ -136,37 +139,37 @@ const Profile = () => {
             onChange={(e) =>
               setSessionData({ ...sessionData, messageToTattooArtist: e.target.value })
             }
-            placeholder="Wiadomość do tatuatora"
+            placeholder={t('session3')}
           />
           <button type="submit">
-            {sessionData.sessionId ? 'Zapisz zmiany' : 'Zapisz się'}
+            {sessionData.sessionId ? t('session4') : t('session5')}
           </button>
         </form>
       </div>
 
       <div className="appointments">
-        <h3>Twoje rezerwacje sesji</h3>
+        <h3>{t('res1')}</h3>
         <ul>
           {sessions.map((session) => (
             <li key={session.id}>
-              <p>Data: {session.sessionDate}</p>
-              <p>Godzina: {session.sessionTime}</p>
-              <p>Wiadomość do tatuatora: {session.messageToTattooArtist}</p>
-              <button onClick={() => handleEditSession(session)}>Edytuj sesję</button>
-              <button onClick={() => handleCancelSession(session.id)}>Odwołaj sesję</button>
+              <p>{t('res2')}: {session.sessionDate}</p>
+              <p>{t('res3')}: {session.sessionTime}</p>
+              <p>{t('session3')}: {session.messageToTattooArtist}</p>
+              <button onClick={() => handleEditSession(session)}>{t('session1')}</button>
+              <button onClick={() => handleCancelSession(session.id)}>{t('res4')}</button>
             </li>
           ))}
         </ul>
       </div>
 
       <div className="message-box">
-        <h3>Wiadomość do studia</h3>
+        <h3>{t('mes1')}</h3>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Napisz wiadomość..."
+          placeholder={t('mes2')}
         />
-        <button onClick={handleSendMessage}>Wyślij</button>
+        <button onClick={handleSendMessage}>{t('mes3')}</button>
       </div>
     </div>
   );
