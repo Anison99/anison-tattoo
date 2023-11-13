@@ -5,17 +5,17 @@ import { Button } from './Button';
 import myLogo from '../images/logo96.png';
 import SocialMedia from './SocialMedia';
 
-function Navbar() {
+const Navbar = () => {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
-  const navigate = useNavigate(); // Dodaj useNavigate
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('user');
     setLoggedIn(false);
-    navigate('/'); // Przekieruj użytkownika na stronę główną po wylogowaniu
-    window.location.replace('/'); // Przeładuj stronę
+    navigate('/');
+    window.location.replace('/');
   };
 
   const handleClick = () => setClick(!click);
@@ -62,7 +62,7 @@ function Navbar() {
       window.removeEventListener('resize', checkButtonSize);
       window.removeEventListener('storage', checkLoggedInStatus);
     };
-  }, [navigate]); // Dodaj navigate jako zależność
+  }, [navigate]); //navigate jako zależność
 
   return (
     <>
