@@ -49,6 +49,8 @@ const resources = {
         'mes1': 'Wiadomość do studia',
         'mes2': 'Napisz wiadomość...',
         'mes3': 'Wyślij',
+        //----- OTHER -----
+        'err1': 'Błędny adres email lub hasło',
         
 
     },
@@ -99,6 +101,8 @@ const resources = {
         'mes1': 'Message to the studio',
         'mes2': 'Write a message...',
         'mes3': 'Send',
+        //----- OTHER -----
+        'err1': 'Incorrect email address or password',
     },
   },
 };

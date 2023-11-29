@@ -19,32 +19,32 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    try {
-      const response = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-        credentials: 'include',
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Zalogowano:', data);
-        localStorage.setItem('user', JSON.stringify(data));
-        setUser(data);
-        navigate('/');
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message);
-      }
-    } catch (error) {
-      console.error('Błąd logowania:', error);
+  e.preventDefault();
+
+  try {
+    const response = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+      credentials: 'include',
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Zalogowano:', data);
+      localStorage.setItem('user', JSON.stringify(data));
+      setUser(data);
+      navigate('/');
+    } else {
+      const errorData = await response.json();
+      setError(errorData.message); // Ustaw błąd zwrócony przez serwer
     }
-  };  
+  } catch (error) {
+    console.error('Błąd logowania:', error);
+  }
+}; 
 
   const handleLogout = () => {
     setUser(null);
@@ -63,7 +63,7 @@ const Login = () => {
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>{t('login')}</h2>
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{t('err1')}</p>}
         <div className="form-group">
           <label htmlFor="email">{t('email')}:</label>
           <input
