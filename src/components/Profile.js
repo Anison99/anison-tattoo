@@ -106,14 +106,14 @@ const Profile = () => {
   };
 
   const handleEditSession = (session) => {
-    // Ustaw dane sesji do edycji w formularzu
     setSessionData({
-      sessionId: session.id, // Tutaj przekazujesz ID sesji do state'u
+      sessionId: session._id,
       sessionDate: session.sessionDate,
       sessionTime: session.sessionTime,
       messageToTattooArtist: session.messageToTattooArtist,
     });
   };
+  
   
   const handleCancelSession = async (sessionId) => {
     console.log('Canceling session ID:', sessionId); // Dodany console.log
@@ -164,27 +164,26 @@ const Profile = () => {
       <div className="session-form">
         <h3>{sessionData.sessionId ? t('session1') : t('session2')}</h3>
         <form onSubmit={handleSessionSubmit}>
-          <input
-            type="date"
-            value={sessionData.sessionDate}
-            onChange={(e) => setSessionData({ ...sessionData, sessionDate: e.target.value })}
-          />
-          <input
-            type="time"
-            value={sessionData.sessionTime}
-            onChange={(e) => setSessionData({ ...sessionData, sessionTime: e.target.value })}
-          />
-          <textarea
-            value={sessionData.messageToTattooArtist}
-            onChange={(e) =>
-              setSessionData({ ...sessionData, messageToTattooArtist: e.target.value })
-            }
-            placeholder={t('session3')}
-          />
-          <button type="submit">
-            {sessionData.sessionId ? t('session4') : t('session5')}
-          </button>
-        </form>
+  <input
+    type="date"
+    value={sessionData.sessionDate}
+    onChange={(e) => setSessionData({ ...sessionData, sessionDate: e.target.value })}
+  />
+  <input
+    type="time"
+    value={sessionData.sessionTime}
+    onChange={(e) => setSessionData({ ...sessionData, sessionTime: e.target.value })}
+  />
+  <textarea
+    value={sessionData.messageToTattooArtist}
+    onChange={(e) => setSessionData({ ...sessionData, messageToTattooArtist: e.target.value })}
+    placeholder={t('session3')}
+  />
+  <button type="submit">
+    {sessionData.sessionId ? t('session4') : t('session5')}
+  </button>
+</form>
+
       </div>
 
       {sessions && sessions.length > 0 ? (
