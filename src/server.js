@@ -98,7 +98,6 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-
 // obsługa rejestracji
 app.post('/register', async (req, res) => {
   try {
@@ -199,7 +198,6 @@ app.put('/api/sessions/:sessionId', async (req, res) => {
 });
 
 // Pobranie danych o sesji użytkownika
-// Pobranie danych o sesji użytkownika
 app.get('/api/user/sessions', async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
@@ -235,8 +233,6 @@ app.delete('/api/sessions/:sessionId', async (req, res) => {
     res.status(500).json({ message: 'Error canceling session' });
   }
 });
-
-
 
 // Wysyłanie wiadomości do studia
 app.post('/api/messages', async (req, res) => {

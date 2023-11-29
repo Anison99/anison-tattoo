@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
 import { useLanguage } from '../language/LanguageContext.js';
+import { format } from 'date-fns';
 
 
 const Profile = () => {
@@ -41,7 +42,7 @@ const Profile = () => {
     let response; // Zadeklaruj zmienną response na poziomie funkcji
   
     if (sessionData.sessionId) {
-      const formattedDate = new Date(sessionData.sessionDate).toISOString().split('T')[0];
+      const formattedDate = format(new Date(sessionData.sessionDate), 'yyyy-MM-dd'); // Użyj format z date-fns
   
       try {
         response = await fetch(`http://localhost:5000/api/sessions/${sessionData.sessionId}`, {
@@ -61,6 +62,7 @@ const Profile = () => {
           console.log('Edytowano sesję');
           fetchSessions();
         } else {
+          
           console.error('Błąd edycji sesji:', await response.text());
         }
       } catch (error) {
@@ -68,7 +70,7 @@ const Profile = () => {
       }
     } else {
       // Kod na zapis nowej sesji
-      const formattedDate = new Date(sessionData.sessionDate).toISOString().split('T')[0];
+      const formattedDate = format(new Date(sessionData.sessionDate), 'yyyy-MM-dd'); // Użyj format z date-fns
   
       try {
         response = await fetch('http://localhost:5000/api/sessions', {
@@ -191,32 +193,30 @@ const Profile = () => {
     <ul>
     {console.log("Sessions:", sessions)}
       {sessions.map((session) => (
-        <li key={session.id}>
+        <li key={session._id}>
           <p>{t('res2')}: {session.sessionDate}</p>
           <p>{t('res3')}: {session.sessionTime}</p>
           <p>{t('session3')}: {session.messageToTattooArtist}</p>
           <button onClick={() => handleEditSession(session)}>{t('session1')}</button>
           <button
-  onClick={() => {
-    if (session._id) { // Sprawdź poprawność ID sesji
-      console.log("Canceling session ID:", session._id);
-      handleCancelSession(session._id);
-    } else {
-      console.error("Invalid session ID");
-    }
-  }}
->
-  {t('res4')}
-</button>
-
+                  onClick={() => {
+                    if (session._id) { // Sprawdź poprawność ID sesji
+                       console.log("Canceling session ID:", session._id);
+                          handleCancelSession(session._id);
+                    } else {
+                        console.error("Invalid session ID");
+                    }
+                  }}
+            >
+              {t('res4')}
+          </button>
         </li>
       ))}
     </ul>
   </div>
-) : (
-  console.log("no sesions register")
-)}
-
+    ) : (
+      console.log("no sesions register")
+    )}
       <div className="message-box">
         <h3>{t('mes1')}</h3>
         <textarea
@@ -229,5 +229,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;
