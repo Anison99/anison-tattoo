@@ -4,7 +4,6 @@ import '../css/Profile.css';
 import { useLanguage } from '../language/LanguageContext.js';
 import { format } from 'date-fns';
 
-
 const Profile = () => {
   const { t, language } = useLanguage();
   const navigate = useNavigate();
@@ -38,12 +37,12 @@ const Profile = () => {
 
   const handleSessionSubmit = async (e) => {
     e.preventDefault();
-    
+
     let response; // Zadeklaruj zmienną response na poziomie funkcji
-  
+
     if (sessionData.sessionId) {
       const formattedDate = format(new Date(sessionData.sessionDate), 'yyyy-MM-dd'); // Użyj format z date-fns
-  
+
       try {
         response = await fetch(`http://localhost:5000/api/sessions/${sessionData.sessionId}`, {
           method: 'PUT',
@@ -57,12 +56,12 @@ const Profile = () => {
           }),
           credentials: 'include',
         });
-  
+
         if (response.ok) {
           console.log('Edytowano sesję');
           fetchSessions();
         } else {
-          
+
           console.error('Błąd edycji sesji:', await response.text());
         }
       } catch (error) {
@@ -71,7 +70,7 @@ const Profile = () => {
     } else {
       // Kod na zapis nowej sesji
       const formattedDate = format(new Date(sessionData.sessionDate), 'yyyy-MM-dd'); // Użyj format z date-fns
-  
+
       try {
         response = await fetch('http://localhost:5000/api/sessions', {
           method: 'POST',
@@ -85,7 +84,7 @@ const Profile = () => {
           }),
           credentials: 'include',
         });
-  
+
         if (response.ok) {
           console.log('Zapisano się na sesję');
           fetchSessions();
@@ -96,7 +95,7 @@ const Profile = () => {
         console.error('Błąd zapisywania na sesję:', error);
       }
     }
-  
+
     setSessionData({
       sessionId: null,
       sessionDate: '',
@@ -108,13 +107,12 @@ const Profile = () => {
   const handleEditSession = (session) => {
     setSessionData({
       sessionId: session._id,
-      sessionDate: session.sessionDate,
+      sessionDate: new Date(session.sessionDate).toISOString().split('T')[0], // Tutaj zmieniamy format daty
       sessionTime: session.sessionTime,
       messageToTattooArtist: session.messageToTattooArtist,
     });
   };
-  
-  
+
   const handleCancelSession = async (sessionId) => {
     console.log('Canceling session ID:', sessionId); // Dodany console.log
     try {
@@ -164,58 +162,57 @@ const Profile = () => {
       <div className="session-form">
         <h3>{sessionData.sessionId ? t('session1') : t('session2')}</h3>
         <form onSubmit={handleSessionSubmit}>
-  <input
-    type="date"
-    value={sessionData.sessionDate}
-    onChange={(e) => setSessionData({ ...sessionData, sessionDate: e.target.value })}
-  />
-  <input
-    type="time"
-    value={sessionData.sessionTime}
-    onChange={(e) => setSessionData({ ...sessionData, sessionTime: e.target.value })}
-  />
-  <textarea
-    value={sessionData.messageToTattooArtist}
-    onChange={(e) => setSessionData({ ...sessionData, messageToTattooArtist: e.target.value })}
-    placeholder={t('session3')}
-  />
-  <button type="submit">
-    {sessionData.sessionId ? t('session4') : t('session5')}
-  </button>
-</form>
+          <input
+            type="date"
+            value={sessionData.sessionDate}
+            onChange={(e) => setSessionData({ ...sessionData, sessionDate: e.target.value })}
+          />
+          <input
+            type="time"
+            value={sessionData.sessionTime}
+            onChange={(e) => setSessionData({ ...sessionData, sessionTime: e.target.value })}
+          />
+          <textarea
+            value={sessionData.messageToTattooArtist}
+            onChange={(e) => setSessionData({ ...sessionData, messageToTattooArtist: e.target.value })}
+            placeholder={t('session3')}
+          />
+          <button type="submit">
+            {sessionData.sessionId ? t('session4') : t('session5')}
+          </button>
+        </form>
 
       </div>
-
       {sessions && sessions.length > 0 ? (
-  <div className="appointments">
-    <h3>{t('res1')}</h3>
-    <ul>
-    {console.log("Sessions:", sessions)}
-      {sessions.map((session) => (
-        <li key={session._id}>
-          <p>{t('res2')}: {session.sessionDate}</p>
-          <p>{t('res3')}: {session.sessionTime}</p>
-          <p>{t('session3')}: {session.messageToTattooArtist}</p>
-          <button onClick={() => handleEditSession(session)}>{t('session1')}</button>
-          <button
+        <div className="appointments">
+          <h3>{t('res1')}</h3>
+          <ul>
+            {console.log("Sessions:", sessions)}
+            {sessions.map((session) => (
+              <li key={session._id}>
+                <p>{t('res2')}: {format(new Date(session.sessionDate), 'yyyy-MM-dd')}</p>
+                <p>{t('res3')}: {session.sessionTime}</p>
+                <p>{t('session3')}: {session.messageToTattooArtist}</p>
+                <button onClick={() => handleEditSession(session)}>{t('session1')}</button>
+                <button
                   onClick={() => {
                     if (session._id) { // Sprawdź poprawność ID sesji
-                       console.log("Canceling session ID:", session._id);
-                          handleCancelSession(session._id);
+                      console.log("Canceling session ID:", session._id);
+                      handleCancelSession(session._id);
                     } else {
-                        console.error("Invalid session ID");
+                      console.error("Invalid session ID");
                     }
                   }}
-            >
-              {t('res4')}
-          </button>
-        </li>
-      ))}
-    </ul>
-  </div>
-    ) : (
-      console.log("no sesions register")
-    )}
+                >
+                  {t('res4')}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        console.log("no sesions register")
+      )}
       <div className="message-box">
         <h3>{t('mes1')}</h3>
         <textarea
