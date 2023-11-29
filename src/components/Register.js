@@ -21,9 +21,9 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { username, email, password } = userData;
-
+  
     try {
       const response = await fetch('http://localhost:5000/register', {
         method: 'POST',
@@ -31,11 +31,12 @@ const Register = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, email, password }),
+        credentials: 'include', // Dodaj tę linię, aby przesłać ciasteczka (jeśli używasz sesji)
       });
-
+  
       if (response.ok) {
         console.log('Rejestracja zakończona sukcesem');
-        navigate('/'); // przekieruj na strone główną po rejestracji 
+        navigate('/'); // Przekieruj na stronę główną po rejestracji
       } else {
         const errorMessage = await response.text();
         setError(`Błąd podczas rejestracji: ${errorMessage}`);
@@ -46,6 +47,7 @@ const Register = () => {
       console.error('Wystąpił błąd podczas rejestracji:', error);
     }
   };
+  
 
   return (
     <div className="register-container">

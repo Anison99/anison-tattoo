@@ -20,7 +20,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
@@ -30,7 +30,7 @@ const Login = () => {
         body: JSON.stringify(userData),
         credentials: 'include',
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         console.log('Zalogowano:', data);
@@ -44,7 +44,7 @@ const Login = () => {
     } catch (error) {
       console.error('Błąd logowania:', error);
     }
-  };
+  };  
 
   const handleLogout = () => {
     setUser(null);
