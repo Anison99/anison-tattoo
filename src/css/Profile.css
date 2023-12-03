@@ -2,154 +2,168 @@
 
 /* Cały kontener profilu */
 .profile-container {
-    max-width: 500px; /* Zmniejsz max-width, aby zmniejszyć szerokość całego kontenera */
-    margin: 0 auto;
-    padding: 10px; /* Zmniejsz padding dla bardziej kompaktowego wyglądu */
-    background-color: #f5f5f5;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-  }
-  
-  /* Nagłówek "Profil użytkownika" */
+  max-width: 500px;
+  /* Zmniejsz max-width, aby zmniejszyć szerokość całego kontenera */
+  margin: 0 auto;
+  padding: 10px;
+  /* Zmniejsz padding dla bardziej kompaktowego wyglądu */
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+/* Nagłówek "Profil użytkownika" */
 .profile-title {
-    text-align: center; /* Wyśrodkuj tekst */
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* Formularz zapisu na sesję */
-  .session-form {
-    max-width: 1200px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 0 auto; /* Wyśrodkowanie poziome */
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Wyśrodkowanie w pionie */
-  }
-  
-  .session-form h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .session-form form input,
-  .session-form form textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .session-form button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .session-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Lista rezerwacji sesji */
-  .appointments {
-    max-width: 1200px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 0 auto; /* Wyśrodkowanie poziome */
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Wyśrodkowanie w pionie */
-  }
-  
-  .appointments h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .appointments ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .appointments li {
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    margin: 10px 0;
-    border-radius: 5px;
-  }
-  
-  .appointments p {
-    margin: 0;
-  }
-  
-  .appointments button {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    margin-right: 10px;
-  }
-  
-  .appointments button:hover {
-    background-color: #bb2d3b;
-  }
-  
-  /* Wiadomość do studia */
-  .message-box {
-    max-width: 1200px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 0 auto; /* Wyśrodkowanie poziome */
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Wyśrodkowanie w pionie */
-  }
-  
-  .message-box h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .message-box textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .message-box button {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .message-box button:hover {
-    background-color: #1e7e34;
-  }
-  
+  text-align: center;
+  /* Wyśrodkuj tekst */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Formularz zapisu na sesję */
+.session-form {
+  max-width: 1200px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 0 auto;
+  /* Wyśrodkowanie poziome */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Wyśrodkowanie w pionie */
+}
+
+.session-form h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.session-form form input,
+.session-form form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.session-form button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.occupied-date {
+  color: red;
+}
+
+
+
+.session-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Lista rezerwacji sesji */
+.appointments {
+  max-width: 1200px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 0 auto;
+  /* Wyśrodkowanie poziome */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Wyśrodkowanie w pionie */
+}
+
+.appointments h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.appointments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.appointments li {
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.appointments p {
+  margin: 0;
+}
+
+.appointments button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.appointments button:hover {
+  background-color: #bb2d3b;
+}
+
+/* Wiadomość do studia */
+.message-box {
+  max-width: 1200px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 0 auto;
+  /* Wyśrodkowanie poziome */
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Wyśrodkowanie w pionie */
+}
+
+.message-box h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.message-box textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.message-box button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.message-box button:hover {
+  background-color: #1e7e34;
+}

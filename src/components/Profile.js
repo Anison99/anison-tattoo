@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
 import { useLanguage } from '../language/LanguageContext.js';
 import { format } from 'date-fns';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Profile = () => {
   const { t, language } = useLanguage();
@@ -16,6 +18,8 @@ const Profile = () => {
 
   const [sessions, setSessions] = useState([]);
   const [message, setMessage] = useState('');
+  const [occupiedDates, setOccupiedDates] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const fetchSessions = async () => {
     // Pobierz rzeczywiste rezerwacje sesji użytkownika po zalogowaniu
@@ -32,14 +36,32 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    // Pobranie zajętych dat z API
+    const fetchOccupiedDates = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/reserved-dates', {
+          method: 'GET',
+        });
+        const data = await response.json();
+        setOccupiedDates(data.reservedDates);
+      } catch (error) {
+        console.error('Błąd pobierania zajętych dat:', error);
+      }
+    };
+
+    fetchOccupiedDates(); // Wywołanie funkcji pobierającej zajęte daty
     fetchSessions();
   }, []);
 
-  // zapisanie się na sesje
+  const highlightOccupiedDates = (date) => {
+    const formattedDate = date.toISOString().split('T')[0];
+    return occupiedDates.includes(formattedDate);
+  };
+
   const handleSessionSubmit = async (e) => {
     e.preventDefault();
 
-    let response; // Zadeklaruj zmienną response na poziomie funkcji
+    let response; 
 
     if (sessionData.sessionId) {
       const formattedDate = format(new Date(sessionData.sessionDate), 'yyyy-MM-dd'); // Użyj format z date-fns
@@ -105,6 +127,18 @@ const Profile = () => {
     });
   };
 
+  const handleDateChange = (date) => {
+    const formattedDate = date.toISOString().split('T')[0];
+    if (occupiedDates.includes(formattedDate)) {
+      alert('This date is already occupied. Please choose a different date.');
+    } else {
+      setSelectedDate(date);
+      setSessionData({ ...sessionData, sessionDate: formattedDate });
+    }
+  };
+
+
+
   const handleEditSession = (session) => {
     setSessionData({
       sessionId: session._id,
@@ -159,14 +193,15 @@ const Profile = () => {
   return (
     <div>
       <h2 className="profile-title">{t('user1')}</h2>
-
       <div className="session-form">
         <h3>{sessionData.sessionId ? t('session1') : t('session2')}</h3>
         <form onSubmit={handleSessionSubmit}>
-          <input
-            type="date"
-            value={sessionData.sessionDate}
-            onChange={(e) => setSessionData({ ...sessionData, sessionDate: e.target.value })}
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            highlightDates={[{ test: highlightOccupiedDates }]}
+            minDate={new Date()}
+            inline
           />
           <input
             type="time"
@@ -182,7 +217,6 @@ const Profile = () => {
             {sessionData.sessionId ? t('session4') : t('session5')}
           </button>
         </form>
-
       </div>
       {sessions && sessions.length > 0 ? (
         <div className="appointments">

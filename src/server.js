@@ -62,7 +62,6 @@ const messageSchema = new mongoose.Schema({
 
 const Message = mongoose.model('Message', messageSchema);
 
-// ---- sprawdzanie danych logowania
 passport.use(new LocalStrategy(
   { usernameField: 'email' },
   async (email, password, done) => {
@@ -122,32 +121,32 @@ app.post('/register', async (req, res) => {
 
     req.login(newUser, (err) => {
       if (err) {
-        return console.log(res.status(500).json({ message: 'Error logging in after registration' }));
+        return res.status(500).json({ message: 'Error logging in after registration' });
       }
-      return console.log(res.json({ message: 'Registration and login successful' }));
+      return res.json({ message: 'Registration and login successful' });
     });
   } catch (error) {
     console.error('Registration error:', error);
-    console.log(res.status(500).json({ message: 'Error during registration' }));
+    res.status(500).json({ message: 'Error during registration' });
   }
 });
 
-// Kod obsługi logowania użytkownika (sprawdzenie czy dany użytkownik istnieje)
+// Kod obsługi logowania użytkownika
 app.post('/login', async (req, res, next) => {
   passport.authenticate('local', async (err, user, info) => {
     try {
       if (err) {
-        return console.log(res.status(500).json({ message: 'Internal Server Error' }));
+        return res.status(500).json({ message: 'Internal Server Error' });
       }
       if (!user) {
-        return console.log(res.status(401).json({ message: 'Invalid credentials' }));
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
       req.logIn(user, (err) => {
         if (err) {
-          return console.log(res.status(500).json({ message: 'Login failed' }));
+          return res.status(500).json({ message: 'Login failed' });
         }
         console.log('User logged in:', req.user.username);
-        return console.log(res.json({ message: 'Login successful' }));
+        return res.json({ message: 'Login successful' });
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -162,8 +161,7 @@ app.post('/api/sessions', async (req, res) => {
   try {
     const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
     const userId = req.isAuthenticated() ? req.user.id : null;
-    
-    // dopisanie do kolekcji linijek z danymi podanymi przez użytkownika
+
     const newSession = new Session({
       userId,
       sessionDate,
@@ -250,6 +248,22 @@ app.post('/api/messages', async (req, res) => {
   } catch (error) {
     console.error('Error sending message:', error);
     res.status(500).json({ message: 'Error sending message' });
+  }
+});
+
+// Pobranie zarezerwowanych dat
+app.get('/api/reserved-dates', async (req, res) => {
+  try {
+    const reservedDates = await Session.find({}, 'sessionDate'); // Pobranie tylko dat rezerwacji
+
+    const formattedDates = reservedDates.map((date) => {
+      return date.sessionDate.toISOString().split('T')[0]; // Formatowanie dat do postaci "YYYY-MM-DD"
+    });
+
+    res.status(200).json({ reservedDates: formattedDates });
+  } catch (error) {
+    console.error('Błąd pobierania zarezerwowanych dat:', error);
+    res.status(500).json({ message: 'Error fetching reserved dates' });
   }
 });
 
