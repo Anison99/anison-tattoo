@@ -53,7 +53,7 @@ const Register = () => {
     <div className="register-container">
       <form className="register-form" onSubmit={handleSubmit}>
         <h2>{t('register')}</h2>
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className="error-message">{t('user2')}</p>}
         <div className="form-group">
           <label htmlFor="username">{t('user')}:</label>
           <input

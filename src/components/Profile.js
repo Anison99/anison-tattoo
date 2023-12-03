@@ -35,6 +35,7 @@ const Profile = () => {
     fetchSessions();
   }, []);
 
+  // zapisanie się na sesje
   const handleSessionSubmit = async (e) => {
     e.preventDefault();
 

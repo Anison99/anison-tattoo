@@ -62,6 +62,7 @@ const messageSchema = new mongoose.Schema({
 
 const Message = mongoose.model('Message', messageSchema);
 
+// ---- sprawdzanie danych logowania
 passport.use(new LocalStrategy(
   { usernameField: 'email' },
   async (email, password, done) => {
@@ -121,32 +122,32 @@ app.post('/register', async (req, res) => {
 
     req.login(newUser, (err) => {
       if (err) {
-        return res.status(500).json({ message: 'Error logging in after registration' });
+        return console.log(res.status(500).json({ message: 'Error logging in after registration' }));
       }
-      return res.json({ message: 'Registration and login successful' });
+      return console.log(res.json({ message: 'Registration and login successful' }));
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'Error during registration' });
+    console.log(res.status(500).json({ message: 'Error during registration' }));
   }
 });
 
-// Kod obsługi logowania użytkownika
+// Kod obsługi logowania użytkownika (sprawdzenie czy dany użytkownik istnieje)
 app.post('/login', async (req, res, next) => {
   passport.authenticate('local', async (err, user, info) => {
     try {
       if (err) {
-        return res.status(500).json({ message: 'Internal Server Error' });
+        return console.log(res.status(500).json({ message: 'Internal Server Error' }));
       }
       if (!user) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+        return console.log(res.status(401).json({ message: 'Invalid credentials' }));
       }
       req.logIn(user, (err) => {
         if (err) {
-          return res.status(500).json({ message: 'Login failed' });
+          return console.log(res.status(500).json({ message: 'Login failed' }));
         }
         console.log('User logged in:', req.user.username);
-        return res.json({ message: 'Login successful' });
+        return console.log(res.json({ message: 'Login successful' }));
       });
     } catch (error) {
       console.error('Login error:', error);
@@ -161,7 +162,8 @@ app.post('/api/sessions', async (req, res) => {
   try {
     const { sessionDate, sessionTime, messageToTattooArtist } = req.body;
     const userId = req.isAuthenticated() ? req.user.id : null;
-
+    
+    // dopisanie do kolekcji linijek z danymi podanymi przez użytkownika
     const newSession = new Session({
       userId,
       sessionDate,

@@ -33,6 +33,7 @@ const resources = {
         'user': 'Nazwa użytkownika',
         'quest3': 'Masz już konto?',
         'quest4': 'Zaloguj się!',
+        'user2': 'Taki użytkownik już istnieje!',
         //------ USER PROFILE ---------
         'user1': 'Profil użytkownika',
         'session1': 'Edytuj sesję',
@@ -85,6 +86,7 @@ const resources = {
         'user': 'User name',
         'quest3': 'Already have an account?',
         'quest4': 'Log in!',
+        'user2': 'This user already exist!',
         //------ USER PROFILE ---------
         'user1': 'User profile',
         'session1': 'Edit session',
