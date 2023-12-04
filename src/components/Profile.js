@@ -54,9 +54,12 @@ const Profile = () => {
   }, []);
 
   const highlightOccupiedDates = (date) => {
-    const formattedDate = date.toISOString().split('T')[0];
+    const formattedDate = date.toISOString().split('T')[1];
+    console.log('Formatted date in highlightOccupiedDates:', formattedDate);
+    console.log('Occupied dates:', occupiedDates);
     return occupiedDates.includes(formattedDate);
   };
+  
 
   const handleSessionSubmit = async (e) => {
     e.preventDefault();
