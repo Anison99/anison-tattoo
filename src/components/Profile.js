@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/Profile.css';
 import { useLanguage } from '../language/LanguageContext.js';
 import { format } from 'date-fns';
+import axios from 'axios'; 
 
 const Profile = () => {
   const { t, language } = useLanguage();
@@ -16,6 +17,7 @@ const Profile = () => {
 
   const [sessions, setSessions] = useState([]);
   const [message, setMessage] = useState('');
+  const [username, setUsername] = useState('');
   
 
   const fetchSessions = async () => {
@@ -34,6 +36,20 @@ const Profile = () => {
 
   useEffect(() => {
     fetchSessions();
+  }, []);
+
+  useEffect(() => {
+    // Wywołanie API, aby pobrać nazwę użytkownika
+    const fetchUsername = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/user', { withCredentials: true });
+        setUsername(response.data.username);
+      } catch (error) {
+        console.error('Error fetching username:', error);
+      }
+    };
+
+    fetchUsername();
   }, []);
 
   const handleSessionSubmit = async (e) => {
@@ -175,7 +191,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h2 className="profile-title">{t('user1')}: </h2>
+      <h2 className="profile-title">{t('user1')}: {username}</h2>
 
       <div className="session-form">
         <h3>{sessionData.sessionId ? t('session1') : t('session2')}</h3>

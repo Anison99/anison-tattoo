@@ -251,6 +251,27 @@ app.post('/api/messages', async (req, res) => {
   }
 });
 
+// Endpoint do pobierania nazwy zalogowanego użytkownika
+app.get('/api/user', async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const user = await User.findById(req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Zwracanie nazwy zalogowanego użytkownika
+    res.status(200).json({ username: user.username });
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ message: 'Error fetching user' });
+  }
+});
+
 // nasłuchiwanie serwera
 const port = process.env.PORT || 5000;
 
