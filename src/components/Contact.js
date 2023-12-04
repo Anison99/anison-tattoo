@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/Contact.css';
 import Map from './Map';
 import { useLanguage } from '../language/LanguageContext.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 
-const isUserLoggedIn = false;
-
 function Contact() {
   const { t, language } = useLanguage();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   // Przykładowe dane kontaktowe
   const contactData = {
     phone: '+48 123 456 789',
@@ -17,6 +18,16 @@ function Contact() {
     instagram: 'https://www.instagram.com/',
     facebook: 'https://www.facebook.com/',
   };
+
+  useEffect(() => {
+    // Tutaj umieść logikę sprawdzającą stan zalogowania użytkownika
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
 
   return (
     <div data-aos="fade-down" data-aos-duration="2000">
@@ -41,20 +52,22 @@ function Contact() {
               height: '2px',
               backgroundColor: '#FFFFFF',
             }}></hr>
-
           </div>
-          {!isUserLoggedIn && (
+          {!isLoggedIn && (
             <div className="login-section">
-              <p className="login-message">Zaloguj się, aby zapisać się na tatuaż!</p>
+            <p className="login-message">Zaloguj się, aby zapisać się na tatuaż!</p>
+            <Link to="/login">
               <button className="login-button">Zaloguj</button>
+            </Link>
+            <Link to="/register">
               <button className="register-button">Zarejestruj</button>
-            </div>
+            </Link>
+          </div>
           )}
         </div>
         {/* Mapa lokalizacji studia */}
         <div className='map-section'>
           <Map />
-
         </div>
       </div>
     </div>
