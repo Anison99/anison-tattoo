@@ -1,26 +1,47 @@
-.about-title{
-    font-size: 2.5rem;
-    margin-top: 40px;
-    text-align: center; /* Wyśrodkowanie w poziomie */
-    line-height: 1.5;
-    color:  #0D2E40;
+.about-title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  margin-top: 40px;
+  text-align: center;
+  /* Wyśrodkowanie w poziomie */
+  line-height: 1.5;
+  color: #0D2E40;
 }
-hr{
-    border: none; /* Grubość i kolor linii */
-    height: 3px;
-    background-color: #A8891C;
-    margin: 20px 15%;
+
+hr {
+  border: none;
+  /* Grubość i kolor linii */
+  height: 3px;
+  background-color: #A8891C;
+  margin: 20px 15%;
 }
 
 .container {
-    display: flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row; /* Obrazek z tekstem obok siebie */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rounded-image {
+  border-radius: 5%;
+  margin-right: 20px;
+  object-fit: cover;
+  margin-bottom: 2rem;
+}
+
+/* RESPONSYWNE */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Zmiana na układ kolumnowy - obrazek nad tekstem */
     align-items: center;
-    justify-content: center; /* Dodaj to, aby umieścić zawartość na środku */
-    padding: 20px;
   }
-  
+
   .rounded-image {
-    border-radius: 5%;
-    margin-right: 20px;
-    object-fit: cover; /* Dodaj to, aby zachować proporcje obrazka i wypełnić obszar */
+
+    margin-bottom: 2rem; /* Dodatkowy margines odstępu pod obrazkiem */
   }
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './css/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive';
 
 import Navbar from './components/Navbar';
 import Register from './components/Register';
