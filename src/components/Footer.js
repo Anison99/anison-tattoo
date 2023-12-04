@@ -13,7 +13,7 @@ function Footer() {
       <div className='sb__footer section_padding'>
         <div className='sb__footer-links'>
           <div className='sb_footer-links-div'>
-            <h4 style={{ color: 'white', fontSize: '20px' }}>{t('contact')}</h4> 
+            <h4>{t('contact')}</h4> 
             <p>
               <FontAwesomeIcon icon={faPhone} className='icons-custom' /> {t('phone')}: +48 123 456 789
             </p>
@@ -22,10 +22,10 @@ function Footer() {
             </p>
           </div>
           <div className='sb_footer-links-logo'>
-                <img src='https://i.imgur.com/qTGxBzc.png' alt='Logo' className='footer-logo' />
-              </div>
+            <img src='https://i.imgur.com/qTGxBzc.png' alt='Logo' className='footer-logo' />
+          </div>
           <div className='sb_footer-links-div'>
-            <h4 style={{ color: 'white', fontSize: '20px' }}>{t('media')}</h4>
+            <h4>{t('media')}</h4>
             <p>
               <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
                 <FontAwesomeIcon icon={faFacebookF} className='icons-custom' /> Facebook
@@ -58,5 +58,6 @@ function Footer() {
     </div>
   );
 }
+
 
 export default Footer;
