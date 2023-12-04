@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/HeroSection.css';
+import styles from'../css/HeroSection.css';
 import Home from './Home';
 import {Swiper,SwiperSlide} from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
@@ -24,8 +24,10 @@ function HeroSection({ slides }) {
         onSwiper={(swiper) => console.log(swiper)}
       >
         {slides && slides.map((slide) => (
-          <SwiperSlide key={slide.image}>
-            <img src={slide.image} alt={slide.title} />
+          <SwiperSlide key={slide.image} >
+            <img src={slide.image} 
+            alt={slide.title} 
+            className={styles.slideImage}/>
           </SwiperSlide>
         ))}
       </Swiper>
