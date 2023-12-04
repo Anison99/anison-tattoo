@@ -5,7 +5,7 @@ import { useLanguage } from '../language/LanguageContext.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faMapMarker } from '@fortawesome/free-solid-svg-icons';
 
-const isUserLoggedIn = true;
+const isUserLoggedIn = false;
 
 function Contact() {
   const { t, language } = useLanguage();
@@ -27,20 +27,34 @@ function Contact() {
         <div className='contact-details'>
           <h2>{t('contact')}</h2>
           <div className='contact-data'>
-          <p>
-            <FontAwesomeIcon icon={faPhone} /> {contactData.phone}
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faEnvelope} /> {contactData.email}
-          </p>
-          <p>
-            <FontAwesomeIcon icon={faMapMarker} /> {contactData.address}
-          </p> 
+            <p>
+              <FontAwesomeIcon icon={faPhone} /> {contactData.phone}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faEnvelope} /> {contactData.email}
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faMapMarker} /> {contactData.address}
+            </p>
+            <hr style={{
+              border: 'none',
+              height: '2px',
+              backgroundColor: '#FFFFFF',
+            }}></hr>
+
           </div>
+          {!isUserLoggedIn && (
+            <div className="login-section">
+              <p className="login-message">Zaloguj się, aby zapisać się na tatuaż!</p>
+              <button className="login-button">Zaloguj</button>
+              <button className="register-button">Zarejestruj</button>
+            </div>
+          )}
         </div>
         {/* Mapa lokalizacji studia */}
         <div className='map-section'>
           <Map />
+
         </div>
       </div>
     </div>
