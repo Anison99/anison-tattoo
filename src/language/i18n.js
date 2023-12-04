@@ -52,6 +52,7 @@ const resources = {
         'mes3': 'Wyślij',
         //----- OTHER -----
         'err1': 'Błędny adres email lub hasło',
+        'alert1': 'Ta data jest już zarezerwowana. Proszę wybrać inną datę.',
         
 
     },
@@ -105,6 +106,7 @@ const resources = {
         'mes3': 'Send',
         //----- OTHER -----
         'err1': 'Incorrect email address or password',
+        'alert1': 'This date is already booked. Please select another date.',
     },
   },
 };

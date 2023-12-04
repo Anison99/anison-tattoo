@@ -251,22 +251,6 @@ app.post('/api/messages', async (req, res) => {
   }
 });
 
-// Pobranie zarezerwowanych dat
-app.get('/api/reserved-dates', async (req, res) => {
-  try {
-    const reservedDates = await Session.find({}, 'sessionDate'); // Pobranie tylko dat rezerwacji
-
-    const formattedDates = reservedDates.map((date) => {
-      return date.sessionDate.toISOString().split('T')[0]; // Formatowanie dat do postaci "YYYY-MM-DD"
-    });
-
-    res.status(200).json({ reservedDates: formattedDates });
-  } catch (error) {
-    console.error('Błąd pobierania zarezerwowanych dat:', error);
-    res.status(500).json({ message: 'Error fetching reserved dates' });
-  }
-});
-
 // nasłuchiwanie serwera
 const port = process.env.PORT || 5000;
 
