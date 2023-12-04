@@ -19,6 +19,7 @@ const resources = {
         'artworksHead': 'NASZE PRACE',
         //------ CONTACT ---------
         'contactHead': 'KONTAKT',
+        'contactMessage': 'Zaloguj się, aby zapisać się na tatuaż!',
         //------ FOOTER ---------
         'phone': 'Telefon',
         'media': 'Media społecznościowe',
@@ -73,6 +74,7 @@ const resources = {
         'artworksHead': 'ARTWORKS',
         //------ CONTACT ---------
         'contactHead': 'CONTACT',
+        'contactMessage': 'Log in to sign up for a tattoo!',
         //------ FOOTER ---------
         'phone': 'Phone',
         'media': 'Social media',

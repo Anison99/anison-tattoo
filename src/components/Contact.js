@@ -55,12 +55,12 @@ function Contact() {
           </div>
           {!isLoggedIn && (
             <div className="login-section">
-            <p className="login-message">Zaloguj się, aby zapisać się na tatuaż!</p>
+            <p className="login-message">{t('contactMessage')}</p>
             <Link to="/login">
-              <button className="login-button">Zaloguj</button>
+              <button className="login-button">{t('login')}</button>
             </Link>
             <Link to="/register">
-              <button className="register-button">Zarejestruj</button>
+              <button className="register-button">{t('register')}</button>
             </Link>
           </div>
           )}
