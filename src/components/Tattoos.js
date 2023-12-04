@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Tattoos.css';
 
 import {Swiper,SwiperSlide} from 'swiper/react';
@@ -9,13 +9,27 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 function Tattoos({slides3}) {
+  const [slidesPerView, setSlidesPerView] = useState(window.innerWidth > 800 ? 3 : 1);
+
+  useEffect(() => {
+    function handleResize() {
+      setSlidesPerView(window.innerWidth > 800 ? 3 : 1);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div data-aos="fade-down" data-aos-duration="2000">
       <div className='slider-position'>
       <Swiper
       modules={[Navigation, Pagination,  A11y]}
         spaceBetween={50}
-        slidesPerView={3}
+        slidesPerView={slidesPerView}
         navigation
         pagination={{ clickable: true }}
         

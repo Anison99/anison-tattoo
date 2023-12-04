@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Artworks.css';
 import Tattoos from './Tattoos';
 import slides3 from '../models/tattoo.json';
@@ -13,6 +13,20 @@ import { useLanguage } from '../language/LanguageContext.js';
 
 function Artworks({slides2}) {
   const { t, language } = useLanguage();
+  const [slidesPerView, setSlidesPerView] = useState(window.innerWidth > 800 ? 3 : 1);
+
+  useEffect(() => {
+    function handleResize() {
+      setSlidesPerView(window.innerWidth > 800 ? 3 : 1);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div data-aos="fade-down" data-aos-duration="2000">
         <h1 className='about-title' alt='about-us'>{t('artworksHead')}</h1>
@@ -21,7 +35,7 @@ function Artworks({slides2}) {
       <Swiper
       modules={[Navigation, Pagination,  A11y]}
         spaceBetween={50}
-        slidesPerView={3}
+        slidesPerView={slidesPerView}
         navigation
         pagination={{ clickable: true }}
         
